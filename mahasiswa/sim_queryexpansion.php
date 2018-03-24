@@ -221,6 +221,8 @@ function hitungsim($query) {
 	}
 }
 
+hitungsim($query);
+
 
 
 //header('Location: result.php');

@@ -3,6 +3,8 @@
 include "header.php";
 include 'connect.php';
 
+
+
 ?>
 
 <div class="content-wrapper">
@@ -27,7 +29,7 @@ include 'connect.php';
               <h3 class="box-title">Pencarian Dokumen</h3>
             </div>
 
-            <form entype="multipart/form-data" method="GET" action="result_queryexp.php">
+            <form entype="multipart/form-data" method="GET" action="resqueryexp.php">
               <div class="box-body">
                 <input class="form-control input-lg" name="keyword" type="text" placeholder="Masukkan kata kunci">
                 <br>

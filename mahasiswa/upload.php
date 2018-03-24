@@ -47,11 +47,11 @@ include "hitungVektor.php";
 
               <div class="form-group">
                       <label for="exampleInputEmail1">Judul Skripsi</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Judul Skripsi" name="judul">
+                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Judul Skripsi" name="judul" required>
                     </div>
               <div class="form-group">
                 <label for="exampleInputFile">Upload Cover</label>
-                <input type="file" name="cover" id="file">
+                <input type="file" data-file_type="pdf" data-max_size="5000000" name="cover" id="file">
                 <p class="help-block">Upload file .pdf dengan maksimal ukuran 5 MB</p>
               </div>
 
@@ -110,7 +110,7 @@ include "hitungVektor.php";
               </div>
             </div>
             <div class="box-footer">
-              <button type="Submit" id="submit" class="btn btn-primary">Submit</button>
+              <button type="Submit" id="submit" class="btn btn-primary" onclick="Upload()">Submit</button>
             </div>
           </form>
         </div>
@@ -119,6 +119,22 @@ include "hitungVektor.php";
   </section>
   <div class="clearfix"></div>
 </div>
+
+
+<script>
+  
+function Upload() {
+        var fileUpload = document.getElementById("fileUpload");
+        if (typeof (fileUpload.files) != "undefined") {
+            var size = parseFloat(fileUpload.files[0].size / 1024).toFixed(2);
+            alert(size + " KB.");
+        } else {
+            alert("This browser does not support HTML5.");
+        }
+    }
+
+
+</script>
 
 
 

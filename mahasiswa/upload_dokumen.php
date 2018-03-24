@@ -60,110 +60,136 @@ if(!isset($_SESSION['username'])){
 	$folder8 = "fileupload/$nama_file_dapus";
 	$folder9 = "fileupload/$nama_file_halbelakang";
 
-	if(move_uploaded_file($lokasi_file_cover,"$folder1")){
 
-	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
-	            VALUES('$nim','$judul',1, '$nama_file_cover', NOW())";
-	            
-	  mysqli_query($conn, $query);
+	$errors     = array();
+    $maxsize    = 5242880;
+    $acceptable = array(
+        'application/pdf'
+    );
 
-	  toIndex($nama_file_cover);
+    if(($_FILES['cover']['size'] >= $maxsize) || ($_FILES["cover"]["size"] == 0)) {
+        $errors[] = 'File tidak boleh lebih besar dari 5 MB';
+    }
+
+    if((!in_array($_FILES['cover']['type'], $acceptable)) && (!empty($_FILES["cover"]["type"]))) {
+        $errors[] = 'File harus berformat PDF';
+    }
+
+    if(count($errors) === 0) {
+
+
+			if(move_uploaded_file($lokasi_file_cover,"$folder1")){
+
+			  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+			            VALUES('$nim','$judul',1, '$nama_file_cover', NOW())";
+			            
+			  mysqli_query($conn, $query);
+
+			  toIndex($nama_file_cover);
+			}
+
+			
+
+			if(move_uploaded_file($lokasi_file_pengesahan,"$folder2")){
+
+			  $query = "INSERT INTO documents (nim, judul,id_label, nama_file, upload_date)
+			            VALUES('$nim', '$judul', 2, '$nama_file_pengesahan', NOW())";
+			            
+			  mysqli_query($conn, $query);
+
+			  toIndex($nama_file_pengesahan);
+
+			}
+
+
+			if(move_uploaded_file($lokasi_file_daftarisi,"$folder3")){
+
+			  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+			            VALUES('$nim', '$judul', 3, '$nama_file_daftarisi', NOW())";
+			            
+			  mysqli_query($conn, $query);
+
+			  toIndex($nama_file_daftarisi);
+
+			}
+
+			if(move_uploaded_file($lokasi_file_babii,"$folder4")){
+
+			  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+			            VALUES('$nim', '$judul', 4, '$nama_file_babii', NOW())";
+			            
+			  mysqli_query($conn, $query);
+
+			  toIndex($nama_file_babii);
+
+			}
+
+			if(move_uploaded_file($lokasi_file_babiii,"$folder5")){
+
+			  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+			            VALUES('$nim', '$judul', 5, '$nama_file_babiii', NOW())";
+			            
+			  mysqli_query($conn, $query);
+
+			  toIndex($nama_file_babiii);
+
+			}
+
+			if(move_uploaded_file($lokasi_file_babiv,"$folder6")){
+
+			  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+			            VALUES('$nim', '$judul', 6, '$nama_file_babiv', NOW())";
+			            
+			  mysqli_query($conn, $query);
+
+			  toIndex($nama_file_babiv);
+
+			}
+
+			if(move_uploaded_file($lokasi_file_babv,"$folder7")){
+
+			  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+			            VALUES('$nim', '$judul', 7, '$nama_file_babv', NOW())";
+			            
+			  mysqli_query($conn, $query);
+
+			  toIndex($nama_file_babv);
+
+			}
+
+			if(move_uploaded_file($lokasi_file_dapus,"$folder8")){
+
+			  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+			            VALUES('$nim', '$judul', 8, '$nama_file_dapus', NOW())";
+			            
+			  mysqli_query($conn, $query);
+
+			  toIndex($nama_file_dapus);
+
+			}
+
+			if(move_uploaded_file($lokasi_file_halbelakang,"$folder9")){
+
+			  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+			            VALUES('$nim', '$judul', 9, '$nama_file_halbelakang', NOW())";
+			            
+			  mysqli_query($conn, $query);
+
+			  toIndex($nama_file_halbelakang);
+
+			}
+	}else{
+
+		foreach($errors as $error) {
+
+        echo '<script>alert("'.$error.'");</script>';
+    	
+    	}
 	}
 
-	
 
-	if(move_uploaded_file($lokasi_file_pengesahan,"$folder2")){
-
-	  $query = "INSERT INTO documents (nim, judul,id_label, nama_file, upload_date)
-	            VALUES('$nim', '$judul', 2, '$nama_file_pengesahan', NOW())";
-	            
-	  mysqli_query($conn, $query);
-
-	  toIndex($nama_file_pengesahan);
-
-	}
-
-
-	if(move_uploaded_file($lokasi_file_daftarisi,"$folder3")){
-
-	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
-	            VALUES('$nim', '$judul', 3, '$nama_file_daftarisi', NOW())";
-	            
-	  mysqli_query($conn, $query);
-
-	  toIndex($nama_file_daftarisi);
-
-	}
-
-	if(move_uploaded_file($lokasi_file_babii,"$folder4")){
-
-	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
-	            VALUES('$nim', '$judul', 4, '$nama_file_babii', NOW())";
-	            
-	  mysqli_query($conn, $query);
-
-	  toIndex($nama_file_babii);
-
-	}
-
-	if(move_uploaded_file($lokasi_file_babiii,"$folder5")){
-
-	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
-	            VALUES('$nim', '$judul', 5, '$nama_file_babiii', NOW())";
-	            
-	  mysqli_query($conn, $query);
-
-	  toIndex($nama_file_babiii);
-
-	}
-
-	if(move_uploaded_file($lokasi_file_babiv,"$folder6")){
-
-	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
-	            VALUES('$nim', '$judul', 6, '$nama_file_babiv', NOW())";
-	            
-	  mysqli_query($conn, $query);
-
-	  toIndex($nama_file_babiv);
-
-	}
-
-	if(move_uploaded_file($lokasi_file_babv,"$folder7")){
-
-	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
-	            VALUES('$nim', '$judul', 7, '$nama_file_babv', NOW())";
-	            
-	  mysqli_query($conn, $query);
-
-	  toIndex($nama_file_babv);
-
-	}
-
-	if(move_uploaded_file($lokasi_file_dapus,"$folder8")){
-
-	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
-	            VALUES('$nim', '$judul', 8, '$nama_file_dapus', NOW())";
-	            
-	  mysqli_query($conn, $query);
-
-	  toIndex($nama_file_dapus);
-
-	}
-
-	if(move_uploaded_file($lokasi_file_halbelakang,"$folder9")){
-
-	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
-	            VALUES('$nim', '$judul', 9, '$nama_file_halbelakang', NOW())";
-	            
-	  mysqli_query($conn, $query);
-
-	  toIndex($nama_file_halbelakang);
-
-	}
-
-
-	hitungBobot();
-	hitungVektor();
+	//hitungBobot();
+	//hitungVektor();
 
 	header('Location: '.$redirect);
 

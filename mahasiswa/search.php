@@ -3,6 +3,19 @@
 include "header.php";
 include 'connect.php';
 
+
+if ( isset( $_GET['submit'] )) {
+  if ($_GET['queryexp'] == 1 ){
+     header("Location: resqueryexp.php");
+     exit;
+}
+else 
+{
+     header("Location: result.php");
+     exit;
+  }
+}
+
 ?>
 
 <div class="content-wrapper">
@@ -26,15 +39,17 @@ include 'connect.php';
             <div class="box-header with-border">
               <h3 class="box-title">Pencarian Dokumen</h3>
             </div>
-
-            <form entype="multipart/form-data" method="GET" action="result.php">
+            <form entype="multipart/form-data" method="POST" action="">
               <div class="box-body">
                 <input class="form-control input-lg" name="keyword" type="text" placeholder="Masukkan kata kunci">
-                <br>
+              </div>
+              <div class="box-body">
+                <input value="1" type="checkbox" class="minimal" name="queryexp" />
+                Gunakan query expansion
               </div>
               <div class="box-footer">
-              <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
-            </div>
+                <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+              </div>
             </form>
             <!-- /.box-body -->
           </div>
@@ -46,6 +61,8 @@ include 'connect.php';
 </div>
 
 <?php
+
+
 
 include "footer.php";
 

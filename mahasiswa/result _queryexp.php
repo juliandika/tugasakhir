@@ -2,7 +2,7 @@
 
 include "header.php";
 include 'connect.php';
-include 'sim.php';
+include 'sim_queryexpansion.php';
 
 $query = $_GET['keyword'];
 
@@ -37,7 +37,7 @@ $query = $_GET['keyword'];
 
               hitungsim($query);
 
-				      $result = mysqli_query($conn, "SELECT DISTINCT judul, nama, nama_jurusan, label, docid, semua.doc AS nama_doc, nilai FROM semua INNER JOIN tbcache ON semua.doc = tbcache.docid WHERE query = '$query' ORDER BY nilai DESC");
+				      $result = mysqli_query($conn, "SELECT DISTINCT judul, nama, nama_jurusan, label, docid, semua.doc AS nama_doc, nilai FROM semua INNER JOIN tbcache_copy ON semua.doc = tbcache.docid WHERE query = '$query' ORDER BY nilai DESC");
 
 
             ?>

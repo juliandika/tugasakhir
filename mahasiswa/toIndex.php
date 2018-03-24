@@ -6,19 +6,16 @@ include 'connect.php';
 function toIndex($nama_file_cover){
 
     include 'connect.php';
-    //include ('PdfToText.phpclass');
+
+    $redirect = "upload.php";
 
     $file = $nama_file_cover;
-
-    echo $file . "jkajsa";
 
 	$string = (string) new PdfToText ("fileupload/" . $file);
 
     //$nama_file = basename( $_FILES['file']['name']);
 
     //echo basename( $_FILES['file']['name']);
-
-    echo '<br>';
 
     $teks = preg_replace('/[^a-zA-Z -]/', '', $string);
 
@@ -35,8 +32,6 @@ function toIndex($nama_file_cover){
 
     $teks6 = explode(" ",$teks5);
 
-    //var_dump($teks5);
-
     $remove_stopword = "SELECT * FROM stopwords";
 
     $hasil = $conn->query($remove_stopword);
@@ -50,7 +45,7 @@ function toIndex($nama_file_cover){
     }
     else{
 
-        echo "Gagal";
+        //echo "Gagal";
     }
 
 
@@ -58,26 +53,25 @@ function toIndex($nama_file_cover){
 
     $teks7 = implode(" ",$filter);
 
-    print_r($filter);
-
-    echo $teks7;
-
     for($i=0; $i<count($filter); $i++){
 
         if(!empty($filter[$i]) && strlen($filter[$i]) > 2){
 
-            echo $filter[$i]. "<br>";
+            //mysqli_query($conn, "INSERT INTO dok8 (nama_file, tokenstem) VALUES($file, $filter[$i])");
 
-            mysqli_query($conn, "INSERT INTO dok8 (nama_file, tokenstem) VALUES('".$file."', '".$filter[$i]."')");
+            //echo "jdajda";
 
-            //mysqli_query($conn, "INSERT INTO dok_copy (nama_file, tokenstem) VALUES('daddsd', 'fsds')");
+            mysqli_query($conn, "INSERT INTO dok9 (nama_file, tokenstem) VALUES('".$file."', '".$filter[$i]."')");
 
         }
 
               
     }
 
+    //header('Location: '.$redirect);
+
 }
+
 
 
 

@@ -1,10 +1,20 @@
 <?php
 
-include "header.php";
-include "connect.php";
+  include "header.php";
+  include "connect.php";
+
+  $sql = "
+  SELECT
+       id_fakultas,
+       nama_fakultas
+  FROM
+       fakultas
+  ORDER BY nama_fakultas
+  ";
+
+  $getComboFakultas = mysqli_query($conn, $sql) or die ('Query Gagal');
 
 ?>
-
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -97,7 +107,9 @@ include "connect.php";
         </div>
         <!-- ./col -->
 
-          <div class="col-xs-12">
+
+
+         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Data Table With Full Features</h3>
@@ -107,7 +119,7 @@ include "connect.php";
 
             <?php
 
-        $result = mysqli_query($conn, "SELECT mahasiswa.nim,mahasiswa.nama,documents.nama_file,documents.id_doc,fakultas.nama_fakultas, jurusan.nama_jurusan,label.nama_label FROM mahasiswa INNER JOIN documents ON mahasiswa.nim = documents.nim INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan INNER JOIN label ON label.id_label = documents.id_label");
+        $result = mysqli_query($conn, "SELECT mahasiswa.nim,mahasiswa.nama,fakultas.nama_fakultas, jurusan.nama_jurusan FROM mahasiswa INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan");
 
 
             ?>
@@ -118,7 +130,6 @@ include "connect.php";
                   <th>Nama</th>
                   <th>Nama Jurusan</th>
                   <th>Nama Fakultas</th>
-                  <th>Nama File</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -130,27 +141,37 @@ include "connect.php";
                     <td><?php echo $row["nama"]; ?></td>
                     <td><?php echo $row["nama_jurusan"]; ?></td>
                     <td><?php echo $row["nama_fakultas"]; ?></td>
-                    <td><?php echo $row["nama_label"]; ?></td>
                     <td>
-                      <a href="#view<?php echo $row['id_doc']; ?>" data-toggle="modal" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit</a>
-                      <a href="#del<?php echo $row['id_doc']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
-                  
-                    <?php include('button_file.php'); ?>
+
+                    <a href="#edit<?php echo $row['nim']; ?>" data-toggle="modal" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                    
+                    <a href="#del<?php echo $row['nim']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+                      
+                      <?php include('button.php'); ?>
+
                     </td>
                   </tr>
-                <?php } ?>
+
+                <?php 
+
+                } 
+
+                ?>
 
                 </tbody>
               </table>
+              <a href="add_mhs.php" class="btn btn-primary" role="button">Tambah Data</a>
+
             </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
         </div>
+
+
+
       </div>
 </section>
-
-  
 
 
 

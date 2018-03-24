@@ -3,6 +3,8 @@
 
 include "connect.php";
 include "toIndex.php";
+include "hitungBobot.php";
+include "hitungVektor.php";
 
 session_start();
 
@@ -15,7 +17,11 @@ if(!isset($_SESSION['username'])){
 
 <?php
 
+	$redirect = "upload.php";
+
 	$nim = $_SESSION['nim'];
+
+	$judul = $_POST['judul'];
 
 	$lokasi_file_cover = $_FILES['cover']['tmp_name'];
 	$nama_file_cover   = ($_FILES['cover']['name']);
@@ -56,8 +62,8 @@ if(!isset($_SESSION['username'])){
 
 	if(move_uploaded_file($lokasi_file_cover,"$folder1")){
 
-	  $query = "INSERT INTO documents (nim, id_label, nama_file)
-	            VALUES('$nim', 1, '$nama_file_cover')";
+	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+	            VALUES('$nim','$judul',1, '$nama_file_cover', NOW())";
 	            
 	  mysqli_query($conn, $query);
 
@@ -68,8 +74,8 @@ if(!isset($_SESSION['username'])){
 
 	if(move_uploaded_file($lokasi_file_pengesahan,"$folder2")){
 
-	  $query = "INSERT INTO documents (nim, id_label, nama_file)
-	            VALUES('$nim', 2, '$nama_file_pengesahan')";
+	  $query = "INSERT INTO documents (nim, judul,id_label, nama_file, upload_date)
+	            VALUES('$nim', '$judul', 2, '$nama_file_pengesahan', NOW())";
 	            
 	  mysqli_query($conn, $query);
 
@@ -80,8 +86,8 @@ if(!isset($_SESSION['username'])){
 
 	if(move_uploaded_file($lokasi_file_daftarisi,"$folder3")){
 
-	  $query = "INSERT INTO documents (nim, id_label, nama_file)
-	            VALUES('$nim', 3, '$nama_file_daftarisi')";
+	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+	            VALUES('$nim', '$judul', 3, '$nama_file_daftarisi', NOW())";
 	            
 	  mysqli_query($conn, $query);
 
@@ -91,8 +97,8 @@ if(!isset($_SESSION['username'])){
 
 	if(move_uploaded_file($lokasi_file_babii,"$folder4")){
 
-	  $query = "INSERT INTO documents (nim, id_label, nama_file)
-	            VALUES('$nim', 4, '$nama_file_babii')";
+	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+	            VALUES('$nim', '$judul', 4, '$nama_file_babii', NOW())";
 	            
 	  mysqli_query($conn, $query);
 
@@ -102,8 +108,8 @@ if(!isset($_SESSION['username'])){
 
 	if(move_uploaded_file($lokasi_file_babiii,"$folder5")){
 
-	  $query = "INSERT INTO documents (nim, id_label, nama_file)
-	            VALUES('$nim', 5, '$nama_file_babiii')";
+	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+	            VALUES('$nim', '$judul', 5, '$nama_file_babiii', NOW())";
 	            
 	  mysqli_query($conn, $query);
 
@@ -113,8 +119,8 @@ if(!isset($_SESSION['username'])){
 
 	if(move_uploaded_file($lokasi_file_babiv,"$folder6")){
 
-	  $query = "INSERT INTO documents (nim, id_label, nama_file)
-	            VALUES('$nim', 6, '$nama_file_babiv')";
+	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+	            VALUES('$nim', '$judul', 6, '$nama_file_babiv', NOW())";
 	            
 	  mysqli_query($conn, $query);
 
@@ -124,8 +130,8 @@ if(!isset($_SESSION['username'])){
 
 	if(move_uploaded_file($lokasi_file_babv,"$folder7")){
 
-	  $query = "INSERT INTO documents (nim, id_label, nama_file)
-	            VALUES('$nim', 7, '$nama_file_babv')";
+	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+	            VALUES('$nim', '$judul', 7, '$nama_file_babv', NOW())";
 	            
 	  mysqli_query($conn, $query);
 
@@ -135,8 +141,8 @@ if(!isset($_SESSION['username'])){
 
 	if(move_uploaded_file($lokasi_file_dapus,"$folder8")){
 
-	  $query = "INSERT INTO documents (nim, id_label, nama_file)
-	            VALUES('$nim', 8, '$nama_file_dapus')";
+	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+	            VALUES('$nim', '$judul', 8, '$nama_file_dapus', NOW())";
 	            
 	  mysqli_query($conn, $query);
 
@@ -146,14 +152,20 @@ if(!isset($_SESSION['username'])){
 
 	if(move_uploaded_file($lokasi_file_halbelakang,"$folder9")){
 
-	  $query = "INSERT INTO documents (nim, id_label, nama_file)
-	            VALUES('$nim', 9, '$nama_file_halbelakang')";
+	  $query = "INSERT INTO documents (nim, judul, id_label, nama_file, upload_date)
+	            VALUES('$nim', '$judul', 9, '$nama_file_halbelakang', NOW())";
 	            
 	  mysqli_query($conn, $query);
 
 	  toIndex($nama_file_halbelakang);
 
 	}
+
+
+	hitungBobot();
+	hitungVektor();
+
+	header('Location: '.$redirect);
 
 
 ?>

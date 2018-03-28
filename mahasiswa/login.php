@@ -36,16 +36,16 @@ include_once 'connect.php';
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="dashboard.php"><b>Admin</b>LTE</a>
+    <a href="dashboard.php"><b>Log in</b> Mahasiswa</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">Silakan login untuk masuk</p>
 
     <form name="form1" action="" method="post">
       <div class="form-group has-feedback">
         <input type="text" name="username" class="form-control" placeholder="Username">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
         <input type="password" name="password" class="form-control" placeholder="Password">
@@ -63,6 +63,8 @@ include_once 'connect.php';
         <!-- /.col -->
       </div>
     </form>
+
+    <a href="../admin/login.php" class="text-center">Login sebagai admin klik di sini.</a>
     <!-- /.social-auth-links -->
 
   </div>
@@ -119,7 +121,7 @@ if(isset($_POST['username']) && isset($_POST['password']))
 
         ?>
 
-        <script>window.location.href='dashboard.php'</script>
+        <script>window.location.href='upload.php'</script>
         <?php
 
 

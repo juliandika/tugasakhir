@@ -1,6 +1,8 @@
 <?php
  
 require_once "connect.php";
+
+error_reporting(E_ALL);
  
 $id_fakultas = $_POST['id_fakultas'];
  

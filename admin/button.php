@@ -1,4 +1,17 @@
-  <!-- Edit data -->
+<?php
+
+$sql = "
+  SELECT
+       id_fakultas,
+       nama_fakultas
+  FROM
+       fakultas
+  ORDER BY nama_fakultas
+  ";
+
+  $getComboFakultas = mysqli_query($conn, $sql) or die ('Query Gagal');
+
+?>
 
   <div class="modal fade" id="edit<?php echo $row['nim']; ?>">
     <div class="modal-dialog">
@@ -11,7 +24,7 @@
         <div class="modal-body">
         <?php
           
-          $edit = mysqli_query($conn,"SELECT * FROM mahasiswa WHERE nim='".$row['nim']."'");
+          $edit = mysqli_query($conn,"SELECT mahasiswa.nim,mahasiswa.nama,fakultas.nama_fakultas, jurusan.nama_jurusan FROM mahasiswa INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan WHERE nim='".$row['nim']."'");
           $erow = mysqli_fetch_array($edit);
 
         ?>
@@ -29,7 +42,7 @@
               <div class="form-group">
                 <label>Pilih Fakultas</label>
                   <select class="form-control" name="cmbFakultas" id="cmbFakultas">
-                    <option value="">--Pilih Fakultas--</option>
+                    <option value=""><?php echo $erow['nama_fakultas']; ?></option>
                       <?php
                          while($data = mysqli_fetch_array($getComboFakultas)){
                               echo '<option value="'.$data['id_fakultas'].'">'.$data['nama_fakultas'].'</option>';
@@ -40,7 +53,7 @@
               <div class="form-group">
                 <label>Pilih Jurusan</label>
                   <select class="form-control" name="cmbJurusan" id="cmbJurusan" width="300">
-                  <option value="">--Pilih Jurusan--</option>
+                  <option value=""><?php echo $erow['nama_jurusan']; ?></option>
                   </select>
               </div>
             </div>
@@ -87,3 +100,6 @@
       <!-- /.modal-content -->
     </div>         <!-- /.modal-dialog -->
 </div>
+
+
+

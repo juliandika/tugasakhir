@@ -73,7 +73,7 @@ include "connect.php";
             <div class="inner">
               <h3><?php echo $jmlMhs['jumlah_mahasiswa']; ?></h3>
 
-              <p>User Registrations</p>
+              <p>Jumlah Mahasiswa</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
@@ -100,7 +100,7 @@ include "connect.php";
           <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
+              <h3 class="box-title">Data Dokumen</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -132,7 +132,7 @@ include "connect.php";
                     <td><?php echo $row["nama_fakultas"]; ?></td>
                     <td><?php echo $row["nama_label"]; ?></td>
                     <td>
-                      <a href="#view<?php echo $row['id_doc']; ?>" data-toggle="modal" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                      <a href="#view<?php echo $row['id_doc']; ?>" data-toggle="modal" class="btn btn-info"><span class="glyphicon glyphicon-info-sign"></span> Detail</a>
                       <a href="#del<?php echo $row['id_doc']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
                   
                     <?php include('button_file.php'); ?>

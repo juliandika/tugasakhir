@@ -3,16 +3,7 @@
   include "header.php";
   include "connect.php";
 
-  $sql = "
-  SELECT
-       id_fakultas,
-       nama_fakultas
-  FROM
-       fakultas
-  ORDER BY nama_fakultas
-  ";
-
-  $getComboFakultas = mysqli_query($conn, $sql) or die ('Query Gagal');
+  
 
 ?>
 
@@ -106,13 +97,10 @@
           </div>
         </div>
         <!-- ./col -->
-
-
-
          <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
+              <h3 class="box-title">Data mahasiswa</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

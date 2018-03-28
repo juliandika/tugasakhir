@@ -1,11 +1,34 @@
 <?php
 
-include "header.php";
+error_reporting(0);
 
+include "connect.php";
+
+session_start();
+
+$nim =  $_SESSION['username'];
+
+if(!isset($_SESSION['username'])){
+
+    header('location: login.php');
+}
+
+$status_upload = mysqli_query($conn, "SELECT status_upload FROM mahasiswa WHERE nim='".$nim."'");
+
+$baris = mysqli_fetch_array($status_upload);
+
+if($baris['status_upload'] == 'yes'){
+
+  header('Location:my_docs.php');
+
+}else{ 
+
+$nim =  $_SESSION['username'];
+
+include "header.php";
 include "toIndex.php";
 include "hitungBobot.php";
 include "hitungVektor.php";
-
 
 ?>
 
@@ -24,12 +47,27 @@ include "hitungVektor.php";
     </ol>
   </section>
 
-  <div class="pad margin no-print">
-    <div class="callout callout-info" style="margin-bottom: 0!important;">
-      <h4><i class="fa fa-info"></i> Note:</h4>
-      This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+  <?php if (!empty($_REQUEST['success'])) { ?>
+    
+    <div class="pad margin no-print">
+      <div class="callout callout-success" style="margin-bottom: 0!important;">
+        <h4><i class="icon fa fa-check"></i>Selamat</h4>
+        File anda telah berhasil diupload.
+      </div>
     </div>
-  </div>
+  
+  <?php } else if (!empty($_REQUEST['error_size'])) { ?>
+    
+    <div class="pad margin no-print">
+      <div class="callout callout-danger" style="margin-bottom: 0!important;">
+        <h4><i class="icon fa fa-ban"></i> Perhatian!</h4>
+        Ukuran file tidak boleh lebih dari 5 MB.
+      </div>
+    </div>
+  
+  <?php } ?>
+
+
 
 <section class="content">
     <div class="row">
@@ -117,27 +155,8 @@ include "hitungVektor.php";
       </div>
     </div>
   </section>
-  <div class="clearfix"></div>
-</div>
 
-
-<script>
-  
-function Upload() {
-        var fileUpload = document.getElementById("fileUpload");
-        if (typeof (fileUpload.files) != "undefined") {
-            var size = parseFloat(fileUpload.files[0].size / 1024).toFixed(2);
-            alert(size + " KB.");
-        } else {
-            alert("This browser does not support HTML5.");
-        }
-    }
-
-
-</script>
-
-
-
+<?php } ?>
 
 <?php
 

@@ -1,9 +1,10 @@
 <?php
 
 include 'connect.php';
-
+error_reporting(0);
 $query = $_GET['keyword'];
 
+mysqli_query($conn, "TRUNCATE TABLE tbcache_copy");
 
 function hitungsim($query) {
 

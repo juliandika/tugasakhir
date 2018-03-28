@@ -47,7 +47,7 @@ $getComboFakultas = mysqli_query($conn, $sql) or die ('Query Gagal');
       <!-- Small boxes (Stat box) -->
   <div class="box box-success">
         <div class="box-header with-border">
-              <h3 class="box-title">General Elements</h3>
+              <h3 class="box-title">Tambah Data Mahasiswa</h3>
         </div>
         <div class="box-body">
           <div class="row">
@@ -97,7 +97,7 @@ $getComboFakultas = mysqli_query($conn, $sql) or die ('Query Gagal');
 
 <script type="text/javascript" src="jquery.min.js"></script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
         $(function() {
              $("#cmbFakultas").change(function(){
                   

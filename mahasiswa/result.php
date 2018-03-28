@@ -48,7 +48,7 @@ $query = $_GET['keyword'];
                   <th>Nama Jurusan</th>
                   <th>Label</th>
                   <th>Nama Dokumen</th>
-                  <th>SIM</th>
+                  <th>Similarity</th>
                   <th>Action</th>
                 </tr>
                 </thead>

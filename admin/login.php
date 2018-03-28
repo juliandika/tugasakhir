@@ -36,16 +36,16 @@ include_once 'connect.php';
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="dashboard.php"><b>Admin</b>LTE</a>
+    <a href="dashboard.php"><b>Log in</b> Admin</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">Silakan login untuk masuk</p>
 
     <form name="form1" action="" method="post">
       <div class="form-group has-feedback">
         <input type="text" name="username" class="form-control" placeholder="Username">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
         <input type="password" name="password" class="form-control" placeholder="Password">

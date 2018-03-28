@@ -11,8 +11,8 @@ include 'connect.php';
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Invoice
-        <small>#007612</small>
+        Pencarian Dokumen
+        <small></small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -26,7 +26,7 @@ include 'connect.php';
       <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Pencarian Dokumen</h3>
+              <h3 class="box-title">Pencarian Dokumen dengan Query Expansion</h3>
             </div>
 
             <form entype="multipart/form-data" method="GET" action="resqueryexp.php">

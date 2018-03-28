@@ -9,7 +9,7 @@
         <div class="modal-body">
         <?php
           
-          $view = mysqli_query($conn,"SELECT mahasiswa.nim,mahasiswa.nama,documents.nama_file,documents.id_doc,fakultas.nama_fakultas, jurusan.nama_jurusan,label.nama_label FROM mahasiswa INNER JOIN documents ON mahasiswa.nim = documents.nim INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan INNER JOIN label ON label.id_label = documents.id_label");
+          $view = mysqli_query($conn,"SELECT mahasiswa.nim,mahasiswa.nama,documents.nama_file,documents.id_doc,fakultas.nama_fakultas, jurusan.nama_jurusan,label.nama_label, documents.judul AS judul, documents.upload_date AS upload_date FROM mahasiswa INNER JOIN documents ON mahasiswa.nim = documents.nim INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan INNER JOIN label ON label.id_label = documents.id_label WHERE id_doc='".$row['id_doc']."'");
 
           $eview = mysqli_fetch_array($view);
 
@@ -25,17 +25,27 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Nama Pemilik</td>
+                    <td><b>Nama Pemilik</b></td>
                     <th>: </th>
-                    <td><?php echo $row["nama"]; ?></td>
+                    <td><?php echo $eview["nama"]; ?></td>
                   </tr>
                   <tr>
-                    <td>Nama Pemilik</td>
+                    <td><b>Nama File</b></td>
                     <th>: </th>
-                    <td><?php echo $row["nama"]; ?></td>
+                    <td><?php echo $eview["nama_file"]; ?></td>
+                  </tr>
+                  <tr>
+                    <td><b>Judul</b></td>
+                    <th>: </th>
+                    <td><?php echo $eview["judul"]; ?></td>
+                  </tr>
+                  <tr>
+                    <td><b>Tanggal Upload</b></td>
+                    <th>: </th>
+                    <td><?php echo $eview["upload_date"]; ?></td>
                   </tr>
                 </tbody>
-              </table>
+          </table>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>

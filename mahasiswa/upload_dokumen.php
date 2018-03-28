@@ -69,10 +69,14 @@ if(!isset($_SESSION['username'])){
 
     if(($_FILES['cover']['size'] >= $maxsize) || ($_FILES["cover"]["size"] == 0)) {
         $errors[] = 'File tidak boleh lebih besar dari 5 MB';
+
+        header('Location:upload.php?error_size=1');
     }
 
     if((!in_array($_FILES['cover']['type'], $acceptable)) && (!empty($_FILES["cover"]["type"]))) {
         $errors[] = 'File harus berformat PDF';
+
+        header('Location:upload.php?error_type=1');
     }
 
     if(count($errors) === 0) {
@@ -178,20 +182,16 @@ if(!isset($_SESSION['username'])){
 			  toIndex($nama_file_halbelakang);
 
 			}
-	}else{
 
-		foreach($errors as $error) {
+			mysqli_query($conn, "UPDATE mahasiswa SET status_upload = 'yes' WHERE nim=$nim");
 
-        echo '<script>alert("'.$error.'");</script>';
-    	
-    	}
+			header('Location:upload.php?success=1');
 	}
-
 
 	//hitungBobot();
 	//hitungVektor();
 
-	header('Location: '.$redirect);
+	//header('Location: '.$redirect);
 
 
 ?>

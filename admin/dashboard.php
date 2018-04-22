@@ -107,7 +107,7 @@ include "connect.php";
 
             <?php
 
-        $result = mysqli_query($conn, "SELECT mahasiswa.nim,mahasiswa.nama,documents.nama_file,documents.id_doc,fakultas.nama_fakultas, jurusan.nama_jurusan,label.nama_label FROM mahasiswa INNER JOIN documents ON mahasiswa.nim = documents.nim INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan INNER JOIN label ON label.id_label = documents.id_label");
+        $result = mysqli_query($conn, "SELECT mahasiswa.nim,mahasiswa.nama,documents.nama_file,documents.nama_file,fakultas.nama_fakultas, jurusan.nama_jurusan,label.nama_label, documents.status_index FROM mahasiswa INNER JOIN documents ON mahasiswa.nim = documents.nim INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan INNER JOIN label ON label.id_label = documents.id_label");
 
 
             ?>
@@ -120,6 +120,7 @@ include "connect.php";
                   <th>Nama Fakultas</th>
                   <th>Nama File</th>
                   <th>Action</th>
+                  <th>Index</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -132,10 +133,25 @@ include "connect.php";
                     <td><?php echo $row["nama_fakultas"]; ?></td>
                     <td><?php echo $row["nama_label"]; ?></td>
                     <td>
-                      <a href="#view<?php echo $row['id_doc']; ?>" data-toggle="modal" class="btn btn-info"><span class="glyphicon glyphicon-info-sign"></span> Detail</a>
-                      <a href="#del<?php echo $row['id_doc']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
-                  
-                    <?php include('button_file.php'); ?>
+                      <a href="#view<?php echo $row['nama_file']; ?>" data-toggle="modal" class="btn btn-info"><span class="glyphicon glyphicon-info-sign"></span></a>
+
+                      <a href="delete_file.php?nama_file=<?php echo $row['nama_file']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+
+                      <?php include('button_file.php'); ?>
+                    </td>
+                    <td>
+                      <?php if($row["status_index"] == 0){ ?>
+
+                          <a href="toIndex.php?nama_file=<?php echo $row['nama_file']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-refresh"></span> Belum terindeks</a>
+                      
+                      <?php }else{ ?>
+
+                          <a href="#view<?php echo $row['id_doc']; ?>" data-toggle="modal" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>    Terindeks</a>
+
+                    <?php } ?>
+
+                    
+                   
                     </td>
                   </tr>
                 <?php } ?>
@@ -150,9 +166,32 @@ include "connect.php";
       </div>
 </section>
 
-  
+<script type = "text/javascript">
 
+  function updateAjax(id_doc,obj){
+    $.ajax({
 
+      type: 'get',
+      url: 'toIndex.php',
+      data: {nama_file:id_doc},
+
+      success:function(data){
+        data = JSON.parse(data);
+
+        if(data){
+          
+          alert("Data berhasil diupdate");
+        
+        }else{
+
+            alert("Data gagal diupdate");
+        }
+      }
+
+    });
+  }
+ 
+</script>
 
 <?php
 

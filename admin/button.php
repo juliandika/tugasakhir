@@ -102,4 +102,33 @@ $sql = "
 </div>
 
 
+<script type="text/javascript">
+        $(function() {
+             $("#cmbFakultas").change(function(){
+                  
+                  var id_fakultas = $(this).val();
+         
+                  $.ajax({
+                     type: "POST",
+                     dataType: "html",
+                     url: "getJurusan.php",
+                     data: "id_fakultas="+id_fakultas,
+                     success: function(msg){
+                         if(msg == ''){
+                                 $("select#cmbJurusan").html('<option value="">--Pilih Jurusan--</option>');
+                                 //$("select#cmbKota").html('<option value="">--Pilih Kota--</option>');
+                         }else{
+                                   $("select#cmbJurusan").html(msg);                                                       
+                         }
+                         $("img#imgLoad").hide();
+         
+                         getAjaxAlamat();                                                        
+                     }
+                  });                    
+             });
+         
+                
+        });
+</script>
+
 

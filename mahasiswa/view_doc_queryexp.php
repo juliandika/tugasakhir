@@ -11,15 +11,7 @@ $docid = $_GET["docid"];
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Invoice
-        <small>#007612</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Invoice</li>
-      </ol>
+
     </section>
 
     <!-- Main content -->
@@ -29,7 +21,6 @@ $docid = $_GET["docid"];
         <div class="col-xs-12">
           <h2 class="page-header">
             <i class="fa fa-globe"></i> Detail Dokumen
-            <small class="pull-right">Date: 2/10/2014</small>
           </h2>
         </div>
         <!-- /.col -->
@@ -38,7 +29,7 @@ $docid = $_GET["docid"];
 
       <?php
 
-        $result = mysqli_query($conn, "SELECT DISTINCT nim, judul, nama, nama_jurusan, nama_unit_panjang, label, semua.doc AS docid, nilai FROM semua INNER JOIN tbcache_copy ON semua.doc = tbcache_copy.docid WHERE docid='".$docid."'");
+        $result = mysqli_query($conn, "SELECT mahasiswa.nim, judul, nama, nama_jurusan, nama_fakultas, nama_label, documents.nama_file AS nama_doc, nilai FROM documents INNER JOIN tbcache ON documents.nama_file = tbcache.docid INNER JOIN mahasiswa ON mahasiswa.nim = documents.nim INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan INNER JOIN label ON label.id_label = documents.id_label  WHERE docid='".$docid."'");
 
 
       ?>
@@ -72,11 +63,11 @@ $docid = $_GET["docid"];
                   </tr>
                   <tr>
                     <td><b>Nama Fakultas</b></td>
-                    <td><?php echo $row["nama_unit_panjang"]; ?></td>
+                    <td><?php echo $row["nama_fakultas"]; ?></td>
                   </tr>
                   <tr>
                     <td><b>Jenis File</b></td>
-                    <td><?php echo $row["label"]; ?></td>
+                    <td><?php echo $row["nama_label"]; ?></td>
                   </tr>
 
                 </tbody>

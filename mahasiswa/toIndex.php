@@ -68,6 +68,8 @@ function toIndex($nama_file_cover){
               
     }
 
+    
+
     //header('Location: '.$redirect);
 
 }

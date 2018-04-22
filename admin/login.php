@@ -100,14 +100,13 @@ if(isset($_POST['username']) && isset($_POST['password']))
     $username = $_POST['username'];
     $password = md5($_POST['password']);
 
-    $sql = "SELECT * FROM mahasiswa WHERE username='$username' AND password='$password'";
+    $sql = "SELECT * FROM admin WHERE username='$username' AND password='$password'";
 
     $result = $conn->query($sql);
 
     $row = $result->fetch_assoc();
     $user = $row['username'];
     $pass = $row['password'];
-    $nim = $row['nim'];
     $nama = $row['nama'];
 
     if($username==$user && $password==$pass){
@@ -115,8 +114,6 @@ if(isset($_POST['username']) && isset($_POST['password']))
         session_start();
         $_SESSION['username'] = $user;
         $_SESSION['nama'] = $nama;
-        $_SESSION['nim'] = $nim;
-
         ?>
 
         <script>window.location.href='dashboard.php'</script>

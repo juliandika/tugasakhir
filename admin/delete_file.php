@@ -2,6 +2,8 @@
 
 
     include('connect.php');
+    include('hitungbobot.php');
+    include('hitungvektor.php');
 
     $nama_file = $_GET["nama_file"];
 
@@ -21,7 +23,9 @@
     }
  
     mysqli_query($conn, "DELETE FROM documents WHERE nama_file='".$nama_file."'");
-
+    mysqli_query($conn, "DELETE FROM dok9 WHERE nama_file='".$nama_file."'");
+    hitungBobot();
+    hitungvektor();
     header('location:dashboard.php');
 
 ?>

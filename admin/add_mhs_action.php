@@ -10,10 +10,17 @@
 
             if(isset($_POST["submit1"]))
             {
-                    mysqli_query($conn, "INSERT INTO mahasiswa(nim, nama, id_fakultas, id_jurusan, username, password, status) VALUES('$_POST[nim]','$_POST[nama]','$_POST[cmbFakultas]','$_POST[cmbJurusan]','$_POST[nim]','$defaultPass', 'no')");
+
+                    $sql = "INSERT INTO mahasiswa(nim, nama, id_fakultas, id_jurusan, username, password, status_upload) VALUES('".$_POST['nim']."','".$_POST['nama']."','".$_POST['cmbFakultas']."','".$_POST['cmbJurusan']."','".$_POST['nim']."','".$defaultPass."', 'no')";
+
+                    $conn->query($sql);
+
+            		//mysqli_query($conn, "INSERT INTO mahasiswa(nim, nama) VALUES('$_POST[nim]','$_POST[nama]')");
 
 
             }
+
+            
 
             header('location:view_mhs.php');
 

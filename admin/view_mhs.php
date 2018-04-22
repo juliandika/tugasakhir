@@ -103,6 +103,8 @@
               <h3 class="box-title">Data mahasiswa</h3>
             </div>
             <!-- /.box-header -->
+
+
             <div class="box-body">
 
             <?php
@@ -134,6 +136,8 @@
                     <a href="#edit<?php echo $row['nim']; ?>" data-toggle="modal" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit</a>
                     
                     <a href="#del<?php echo $row['nim']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+
+                    <button onclick="deleteAjax(<?php echo $row['nim']; ?>,this)" class="btn btn-danger">Delete</button>
                       
                       <?php include('button.php'); ?>
 
@@ -156,12 +160,34 @@
           <!-- /.box -->
         </div>
 
-
-
       </div>
 </section>
 
+<script type = "text/javascript">
 
+  function deleteAjax(nim,obj){
+    $.ajax({
+
+      type: 'get',
+      url: 'delete.php',
+      data: {id:nim},
+
+      success:function(data){
+        data = JSON.parse(data);
+        if(data){
+          
+          $(obj).closest('tr').remove();
+        
+        }else{
+
+            alert("Data was succesfully captured");
+        }
+      }
+
+    });
+  }
+ 
+</script>
 
 <?php
 

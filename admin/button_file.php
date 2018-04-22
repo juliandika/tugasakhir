@@ -1,4 +1,4 @@
-<div class="modal fade" id="view<?php echo $row['id_doc']; ?>">
+<div class="modal fade" id="view">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -9,7 +9,7 @@
         <div class="modal-body">
         <?php
           
-          $view = mysqli_query($conn,"SELECT mahasiswa.nim,mahasiswa.nama,documents.nama_file,documents.id_doc,fakultas.nama_fakultas, jurusan.nama_jurusan,label.nama_label, documents.judul AS judul, documents.upload_date AS upload_date FROM mahasiswa INNER JOIN documents ON mahasiswa.nim = documents.nim INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan INNER JOIN label ON label.id_label = documents.id_label WHERE id_doc='".$row['id_doc']."'");
+          $view = mysqli_query($conn,"SELECT mahasiswa.nim,mahasiswa.nama,documents.nama_file,documents.nama_file,fakultas.nama_fakultas, jurusan.nama_jurusan,label.nama_label, documents.judul AS judul, documents.upload_date AS upload_date FROM mahasiswa INNER JOIN documents ON mahasiswa.nim = documents.nim INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan INNER JOIN label ON label.id_label = documents.id_label WHERE nama_file='".$row['nama_file']."'");
 
           $eview = mysqli_fetch_array($view);
 

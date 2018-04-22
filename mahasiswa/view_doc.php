@@ -12,13 +12,9 @@ $docid = $_GET["docid"];
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Invoice
-        <small>#007612</small>
+        Hasil Pencarian
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Invoice</li>
       </ol>
     </section>
 
@@ -28,8 +24,7 @@ $docid = $_GET["docid"];
       <div class="row">
         <div class="col-xs-12">
           <h2 class="page-header">
-            <i class="fa fa-globe"></i> Detail Dokumen
-            <small class="pull-right">Date: 2/10/2014</small>
+            <i class="fa fa-book"></i> Detail Dokumen
           </h2>
         </div>
         <!-- /.col -->

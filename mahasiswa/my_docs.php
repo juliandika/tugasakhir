@@ -12,9 +12,6 @@ $nim =  $_SESSION['username'];
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Invoice</li>
       </ol>
     </section>
 
@@ -24,8 +21,7 @@ $nim =  $_SESSION['username'];
       <div class="row">
         <div class="col-xs-12">
           <h2 class="page-header">
-            <i class="fa fa-globe"></i>Dokumen saya
-            <small class="pull-right">Date: 2/10/2014</small>
+            <i class="fa fa-book"></i> Dokumen saya
           </h2>
         </div>
         <!-- /.col -->
@@ -34,7 +30,7 @@ $nim =  $_SESSION['username'];
 
       <?php
 
-        $result = mysqli_query($conn, "SELECT documents.id_doc, documents.judul, documents.nama_file, label.nama_label, documents.upload_date FROM documents INNER JOIN label ON documents.id_label = label.id_label WHERE nim = $nim");
+        $result = mysqli_query($conn, "SELECT documents.nama_file, documents.judul, documents.nama_file AS nama_file, label.nama_label, documents.upload_date FROM documents INNER JOIN label ON documents.id_label = label.id_label WHERE nim = $nim");
 
 
       ?>
@@ -58,10 +54,7 @@ $nim =  $_SESSION['username'];
                     <td><?php echo $row["judul"]; ?></td>
                     <td><?php echo $row["nama_label"]; ?></td>
                     <td>
-                      <a href="#view<?php echo $row['id_doc']; ?>" data-toggle="modal" class="btn btn-info"><span class="glyphicon glyphicon-info-sign"></span> Detail</a>
-                      <a href="#del<?php echo $row['id_doc']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
-
-                      <?php include('button.php'); ?>
+                      <a href="#del<?php echo $row['nama_file']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
                 
                     </td>
                   </tr>

@@ -1,10 +1,10 @@
 <?php
 
 include 'connect.php';
-error_reporting(0);
+//error_reporting(0);
 $query = $_GET['keyword'];
 
-mysqli_query($conn, "TRUNCATE TABLE tbcache_copy");
+mysqli_query($conn, "TRUNCATE TABLE tb_cache");
 
 function hitungsim($query) {
 
@@ -12,7 +12,7 @@ function hitungsim($query) {
 
 	$result = array();
 
-	$sql = "SELECT Count(*) as n FROM tbvektor";
+	$sql = "SELECT Count(*) as n FROM tb_vektor";
 
 	$resn = $conn->query($sql);
 
@@ -21,36 +21,37 @@ function hitungsim($query) {
 	
 	$aquery = explode(" ", $query);
 	
-	$panjangQuery = 0;
-	$panjangQuerySinonim = 0;
-	$aBobotQuery = array();
-	$aBobotSinonim = array();
-	$adaSinonim = array();
+	$panjangQueryAwal = 0;
+	$panjangQueryExpansion = 0;
+	$aBobotQueryAwal = array();
+	$aBobotQueryExpansion = array();
+	$adaQueryExpansion = array();
 	$adaTerm = array();
 	$query = array();
 	$index = array();
 	$vektor = array();
-	$querytotal = array();
-	$totalSinonim = array();
+	$querygabungan = array();
+	$QueryExpansion = array();
 	
 	for ($i=0; $i<count($aquery); $i++) {
 
-		$start1 = microtime(true);
+		$get = mysqli_query($conn, "SELECT * FROM tb_index WHERE term like '$aquery[$i]' LIMIT 1");
 
-		$sql3 = mysqli_query($conn, "SELECT * FROM tbindex WHERE term like '$aquery[$i]' LIMIT 1");
+		if(mysqli_num_rows($get) > 0){
 
-		if(mysqli_num_rows($sql3) > 0){
-
-			while($row = mysqli_fetch_array($sql3)){
+			while($row = mysqli_fetch_array($get)){
 
 				  $idf = $row['bobot'] / $row['freq'];
 
-				  
-				  $aBobotQuery[] = $idf;
+				  $aBobotQueryAwal[] = $idf;
+
+				  echo "<pre>";
+				  print_r($aBobotQueryAwal);
+				  echo "</pre>";
 
 				  $query[] = $row['term'];
 
-				  $panjangQuery = $panjangQuery + $idf * $idf;
+				  $panjangQueryAwal = $panjangQueryAwal + $idf * $idf;
 				  
 				  $AdaTerm = 1;
 			}
@@ -59,14 +60,13 @@ function hitungsim($query) {
 
 		if($AdaTerm = 1) {
 
-			$sin = "SELECT * FROM sinonim WHERE kata LIKE '$aquery[$i]'";
+			$sin = "SELECT * FROM tb_tesaurus WHERE kata LIKE '$aquery[$i]'";
 
 	    	$res = $conn->query($sin);
 			
 	   		
 	   		if($res->num_rows > 0){
 
-		   			$adaSinonim[$i] = 1;
 
 					while($row = $res->fetch_assoc()){
 
@@ -78,11 +78,13 @@ function hitungsim($query) {
 
 							$idf_sinonim = 0.5 * $idf;
 
-							$aBobotSinonim[] = $idf_sinonim;
+							$aBobotQueryExpansion[] = $idf_sinonim;
 
-							$panjangQuerySinonim = $panjangQuerySinonim + $idf_sinonim * $idf_sinonim;
+							$panjangQueryExpansion = $panjangQueryExpansion + $idf_sinonim * $idf_sinonim;
 
-							$totalSinonim[] = $asinonim[$j];
+							$QueryExpansion[] = $asinonim[$j];
+
+							$adaQueryExpansion = 1;
 
 						}
 
@@ -93,14 +95,15 @@ function hitungsim($query) {
 
 	} 
 
-	$querytotal = array_merge($query, $totalSinonim);
+	$queryGabungan = array_merge($query, $QueryExpansion);
 
-	$panjangQueryTotal = sqrt($panjangQuery + $panjangQuerySinonim);
+	$panjangQueryTotal = sqrt($panjangQueryAwal + $panjangQueryExpansion);
+	$panjangVektorQueryAwal = sqrt($panjangQueryAwal);
+	$panjangVektorQueryExpansion = sqrt($panjangQueryExpansion);
 
+	for ($i=0; $i<count($queryGabungan); $i++) {
 
-	for ($i=0; $i<count($querytotal); $i++) {
-
-		$sql4 = mysqli_query($conn, "SELECT * FROM tbindex WHERE term like '$querytotal[$i]'");
+		$sql4 = mysqli_query($conn, "SELECT * FROM tb_index WHERE term like '$queryGabungan[$i]'");
 
 		while($row = mysqli_fetch_array($sql4)){
 
@@ -113,7 +116,7 @@ function hitungsim($query) {
 
 	for ($i=0; $i<count($index); $i++) {
 
-		$sql5 = mysqli_query($conn, "SELECT * FROM tbvektor WHERE docid = '".$index[$i]['docid']."'");
+		$sql5 = mysqli_query($conn, "SELECT * FROM tb_vektor WHERE nama_dokumen = '".$index[$i]['nama_dokumen']."'");
 
 			while($row = mysqli_fetch_array($sql5)){
 
@@ -137,35 +140,62 @@ function hitungsim($query) {
 
 			for ($k=0; $k<count($query); $k++) {
 
-					if (($index[$j]['term'] == $query[$k]) && ($index[$j]['docid'] == $vektor[$i]['docid'])) {
+					if (($index[$j]['term'] == $query[$k]) && ($index[$j]['nama_dokumen'] == $vektor[$i]['nama_dokumen'])) {
 
-						$dotproduct1 = $dotproduct1 + $aBobotQuery[$k] * $index[$j]['bobot'];
+						$dotproduct1 = $dotproduct1 + $aBobotQueryAwal[$k] * $index[$j]['bobot'];
+
+
+
+						
 
 					}
 
 
 			}
-				for ($l=0; $l<count($totalSinonim); $l++) {
+				for ($l=0; $l<count($QueryExpansion); $l++) {
 
-					if (($index[$j]['term'] == $totalSinonim[$l]) && ($index[$j]['docid'] == $vektor[$i]['docid'])) {
+					if (($index[$j]['term'] == $QueryExpansion[$l]) && ($index[$j]['nama_dokumen'] == $vektor[$i]['nama_dokumen'])) {
 
-						$dotproduct2 = $dotproduct2 + $index[$j]['bobot'] * $aBobotSinonim[$l];
+						$dotproduct2 = $dotproduct2 + $index[$j]['bobot'] * $aBobotQueryExpansion[$l];
+
+						
 						
 						}	
 					}
 
 		}
 
+		echo "Dot product  " . $dotproduct1 . "<br>";
+
 		if (($dotproduct1 != 0) || ($dotproduct2 != 0)) {
 
-			$sim = ($dotproduct1 + $dotproduct2) / ($panjangQueryTotal * $vektor[$i]['panjang']);
-			$result[] = array('$query',$vektor[$i]['docid'],$sim);
+			if($adaQueryExpansion == 1 && $dotproduct1 != 0){
 
+				$sim = $dotproduct1 / ($panjangQueryAwal * $vektor[$i]['panjang_vektor']);
+
+				echo "a" . $sim . "<br>";
+
+			}else if($adaQueryExpansion == 1 && $dotproduct1 == 0){
+
+				$sim = $dotproduct2 / ($panjangQueryExpansion * $vektor[$i]['panjang_vektor']);
+
+				echo "b" . $sim . "<br>";
+
+			}else{
+
+				$sim = $dotproduct1 / ($panjangVektorQueryAwal * $vektor[$i]['panjang_vektor']);
+
+				echo "c " . $sim . "<br>";
+
+			}
+
+
+			$result[] = array($vektor[$i]['id_dokumen'],$vektor[$i]['nama_dokumen'],$sim);
 
 
 			$jumlahmirip++;
 
-			$docId = $vektor[$i]['docid'];
+			$docId = $vektor[$i]['nama_dokumen'];
 		}
 
 
@@ -174,21 +204,22 @@ function hitungsim($query) {
 		}
 	}
 
-	mysqli_query($conn, "TRUNCATE TABLE tbcache");
+	mysqli_query($conn, "TRUNCATE TABLE tb_cache");
 
 	$data = array();
 	foreach($result as $row) {
-	    $docId = mysqli_real_escape_string($conn, $row[1]);
+		$id_dokumen = (int) $row[0];
+	    $nama_dokumen = mysqli_real_escape_string($conn, $row[1]);
 	    $sim = (float) $row[2];
-	    $data[] = "('$docId', $sim)";
+	    $data[] = "($id_dokumen, '$docId', $sim)";
 	}
 
 	$values = implode(',', $data);
 
-	$sql = "INSERT INTO tbcache(docid, nilai) VALUES $values";
+	$sql = "INSERT INTO tb_cache(id_dokumen, nama_dokumen, nilai_sim) VALUES $values";
 
 	$conn->query($sql);
-	//echo "Panjang query total  = " . $panjangQueryTotal . "<br><br>";
+	
 }
 
 hitungsim($query);

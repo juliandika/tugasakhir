@@ -1,18 +1,18 @@
 <?php
 
 include 'connect.php';
-error_reporting(0);
+//error_reporting(0);
 
 $query = $_GET['keyword'];
 
-mysqli_query($conn, "TRUNCATE TABLE tbcache");
+mysqli_query($conn, "TRUNCATE TABLE tb_cache");
 function hitungsim($query) {
 
 include 'connect.php';
 
 	$result = array();
 
-	$sql = "SELECT Count(*) as n FROM tbvektor";
+	$sql = "SELECT Count(*) as n FROM tb_vektor";
 
 	$resn = $conn->query($sql);
 
@@ -39,7 +39,7 @@ include 'connect.php';
 
 		//$sql2 = "SELECT Count(*) as N from tbindex WHERE term like '$aquery[$i]'";
 
-		$sql3 = mysqli_query($conn, "SELECT * FROM tbindex WHERE term like '$aquery[$i]' LIMIT 1");
+		$sql3 = mysqli_query($conn, "SELECT * FROM tb_index WHERE term like '$aquery[$i]' LIMIT 1");
 
 		if(mysqli_num_rows($sql3) > 0){
 
@@ -73,7 +73,7 @@ include 'connect.php';
 	for ($i=0; $i<count($query); $i++) {
 
 
-		$sql4 = mysqli_query($conn, "SELECT * FROM tbindex WHERE term like '$query[$i]'");
+		$sql4 = mysqli_query($conn, "SELECT * FROM tb_index WHERE term like '$query[$i]'");
 
 		while($row = mysqli_fetch_array($sql4)){
 
@@ -89,7 +89,7 @@ include 'connect.php';
 
 	for ($i=0; $i<count($index); $i++) {
 
-		$sql5 = mysqli_query($conn, "SELECT * FROM tbvektor WHERE docid = '".$index[$i]['docid']."'");
+		$sql5 = mysqli_query($conn, "SELECT * FROM tb_vektor WHERE nama_file = '".$index[$i]['nama_file']."'");
 
 		while($row = mysqli_fetch_array($sql5)){
 
@@ -112,7 +112,7 @@ include 'connect.php';
 
 			for ($k=0; $k<count($query); $k++) {
 
-					if (($index[$j]['term'] == $query[$k]) && ($index[$j]['docid'] == $vektor[$i]['docid'])) {
+					if (($index[$j]['term'] == $query[$k]) && ($index[$j]['nama_file'] == $vektor[$i]['nama_file'])) {
 
 						$dotproduct = $dotproduct + $aBobotQuery[$k] * $index[$j]['bobot'];
 
@@ -124,14 +124,14 @@ include 'connect.php';
 		if ($dotproduct != 0) {
 
 
-			$sim = $dotproduct / ($panjangQueryTotal * $vektor[$i]['panjang']);
+			$sim = $dotproduct / ($panjangQueryTotal * $vektor[$i]['panjang_vektor']);
 
-			$result[] = array($query,$vektor[$i]['docid'],$sim);
+			$result[] = array($query,$vektor[$i]['nama_file'],$sim);
 
 			$jumlahmirip++;
 
 
-			$docId = $vektor[$i]['docid'];
+			$docId = $vektor[$i]['nama_file'];
 
 		}
 
@@ -143,7 +143,7 @@ include 'connect.php';
 
 
 
-	mysqli_query($conn, "TRUNCATE TABLE tbcache");
+	mysqli_query($conn, "TRUNCATE TABLE tb_cache");
 
 	$data = array();
 	foreach($result as $row) {
@@ -154,7 +154,7 @@ include 'connect.php';
 
 	$values = implode(',', $data);
 
-	$sql = "INSERT INTO tbcache (docid, nilai) VALUES $values";
+	$sql = "INSERT INTO tb_cache (nama_file, nilai_sim) VALUES $values";
 
 	$conn->query($sql);
 		

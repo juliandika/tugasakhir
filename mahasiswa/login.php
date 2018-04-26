@@ -102,7 +102,7 @@ if(isset($_POST['username']) && isset($_POST['password']))
     $username = $_POST['username'];
     $password = md5($_POST['password']);
 
-    $sql = "SELECT * FROM mahasiswa WHERE username='$username' AND password='$password'";
+    $sql = "SELECT * FROM tb_mahasiswa WHERE username='$username' AND password='$password'";
 
     $result = $conn->query($sql);
 
@@ -122,6 +122,7 @@ if(isset($_POST['username']) && isset($_POST['password']))
         ?>
 
         <script>window.location.href='upload.php'</script>
+        
         <?php
 
 

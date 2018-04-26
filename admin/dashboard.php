@@ -25,12 +25,12 @@ include "connect.php";
 
 <?php
 
-  $Doc = mysqli_query($conn, "SELECT COUNT(*) AS jumlah_dokumen FROM tbvektor_copy");
+  $Doc = mysqli_query($conn, "SELECT COUNT(*) AS jumlah_dokumen FROM tb_vektor");
 
   $jmlDoc = mysqli_fetch_array($Doc);
 
 
-  $Mhs = mysqli_query($conn, "SELECT COUNT(*) AS jumlah_mahasiswa FROM mahasiswa");
+  $Mhs = mysqli_query($conn, "SELECT COUNT(*) AS jumlah_mahasiswa FROM tb_mahasiswa");
 
   $jmlMhs = mysqli_fetch_array($Mhs);
 
@@ -107,7 +107,7 @@ include "connect.php";
 
             <?php
 
-        $result = mysqli_query($conn, "SELECT mahasiswa.nim,mahasiswa.nama,documents.nama_file,documents.nama_file,fakultas.nama_fakultas, jurusan.nama_jurusan,label.nama_label, documents.status_index FROM mahasiswa INNER JOIN documents ON mahasiswa.nim = documents.nim INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan INNER JOIN label ON label.id_label = documents.id_label");
+        $result = mysqli_query($conn, "SELECT tb_mahasiswa.nim,tb_mahasiswa.nama,tb_dokumen.id_dokumen, tb_dokumen.nama_dokumen,tb_dokumen.nama_dokumen,tb_fakultas.nama_fakultas, tb_jurusan.nama_jurusan,tb_label.nama_label, tb_dokumen.status_index FROM tb_mahasiswa INNER JOIN tb_dokumen ON tb_mahasiswa.nim = tb_dokumen.nim INNER JOIN tb_fakultas ON tb_mahasiswa.id_fakultas = tb_fakultas.id_fakultas INNER JOIN tb_jurusan ON tb_mahasiswa.id_jurusan = tb_jurusan.id_jurusan INNER JOIN tb_label ON tb_label.id_label = tb_dokumen.id_label");
 
 
             ?>
@@ -118,7 +118,7 @@ include "connect.php";
                   <th>Nama</th>
                   <th>Nama Jurusan</th>
                   <th>Nama Fakultas</th>
-                  <th>Nama File</th>
+                  <th>Label</th>
                   <th>Action</th>
                   <th>Index</th>
                 </tr>
@@ -133,24 +133,23 @@ include "connect.php";
                     <td><?php echo $row["nama_fakultas"]; ?></td>
                     <td><?php echo $row["nama_label"]; ?></td>
                     <td>
-                      <a href="#view<?php echo $row['nama_file']; ?>" data-toggle="modal" class="btn btn-info"><span class="glyphicon glyphicon-info-sign"></span></a>
 
-                      <a href="delete_file.php?nama_file=<?php echo $row['nama_file']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                      <a href="delete_file.php?nama_dokumen=<?php echo $row['nama_dokumen']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
 
-                      <?php include('button_file.php'); ?>
+                      
                     </td>
                     <td>
                       <?php if($row["status_index"] == 0){ ?>
 
-                          <a href="toIndex.php?nama_file=<?php echo $row['nama_file']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-refresh"></span> Belum terindeks</a>
+                          <a href="toIndex.php?id_dokumen=<?php echo $row['id_dokumen']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-refresh"></span> Belum terindeks</a>
                       
                       <?php }else{ ?>
 
-                          <a href="#view<?php echo $row['id_doc']; ?>" data-toggle="modal" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>    Terindeks</a>
+                          <a href="#view<?php echo $row['nama_dokumen']; ?>" data-toggle="modal" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>    Terindeks</a>
 
                     <?php } ?>
 
-                    
+                    <?php include('button_file.php'); ?>
                    
                     </td>
                   </tr>

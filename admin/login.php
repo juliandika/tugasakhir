@@ -100,7 +100,7 @@ if(isset($_POST['username']) && isset($_POST['password']))
     $username = $_POST['username'];
     $password = md5($_POST['password']);
 
-    $sql = "SELECT * FROM admin WHERE username='$username' AND password='$password'";
+    $sql = "SELECT * FROM tb_admin WHERE username='$username' AND password='$password'";
 
     $result = $conn->query($sql);
 
@@ -117,6 +117,7 @@ if(isset($_POST['username']) && isset($_POST['password']))
         ?>
 
         <script>window.location.href='dashboard.php'</script>
+        
         <?php
 
 

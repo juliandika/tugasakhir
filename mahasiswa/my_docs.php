@@ -30,7 +30,7 @@ $nim =  $_SESSION['username'];
 
       <?php
 
-        $result = mysqli_query($conn, "SELECT documents.nama_file, documents.judul, documents.nama_file AS nama_file, label.nama_label, documents.upload_date FROM documents INNER JOIN label ON documents.id_label = label.id_label WHERE nim = $nim");
+        $result = mysqli_query($conn, "SELECT tb_dokumen.nama_file, tb_dokumen.judul, tb_dokumen.nama_file AS nama_file, tb_label.nama_label, tb_dokumen.upload_date FROM tb_dokumen INNER JOIN tb_label ON tb_dokumen.id_label = tb_label.id_label WHERE nim = $nim");
 
 
       ?>
@@ -43,6 +43,7 @@ $nim =  $_SESSION['username'];
                 <tr>
                   <th>Judul</th>
                   <th>Jenis File</th>
+                  <th>Waktu Terupload</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -53,8 +54,11 @@ $nim =  $_SESSION['username'];
                 <tr>
                     <td><?php echo $row["judul"]; ?></td>
                     <td><?php echo $row["nama_label"]; ?></td>
+                    <td><?php echo $row["upload_date"]; ?></td>
                     <td>
                       <a href="#del<?php echo $row['nama_file']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+
+                      <?php include('button.php'); ?>
                 
                     </td>
                   </tr>

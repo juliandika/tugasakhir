@@ -32,7 +32,7 @@ $query = $_GET['keyword'];
 
               hitungsim($query);
 
-				      $result = mysqli_query($conn, "SELECT DISTINCT judul, nama, nama_jurusan, label, docid, semua.doc AS nama_doc, nilai FROM semua INNER JOIN tbcache ON semua.doc = tbcache.docid ORDER BY nilai DESC");
+				      $result = mysqli_query($conn, "SELECT judul, nama, nama_jurusan, nama_fakultas, nama_label, tb_dokumen.nama_file AS nama_file, nilai_sim FROM tb_dokumen INNER JOIN tb_cache ON tb_dokumen.nama_file = tb_cache.nama_file INNER JOIN tb_mahasiswa ON tb_mahasiswa.nim = tb_dokumen.nim INNER JOIN tb_fakultas ON tb_mahasiswa.id_fakultas = tb_fakultas.id_fakultas INNER JOIN tb_jurusan ON tb_mahasiswa.id_jurusan = tb_jurusan.id_jurusan INNER JOIN tb_label ON tb_label.id_label = tb_dokumen.id_label ORDER BY nilai_sim DESC");
 
 
             ?>
@@ -52,9 +52,9 @@ $query = $_GET['keyword'];
 	                <tr>
 	                  <td><?php echo $row["judul"]; ?></td>
 	                  <td><?php echo $row["nama_jurusan"]; ?></td>
-	                  <td><?php echo $row["label"]; ?></td>
-	                  <td><?php echo $row["nilai"]; ?></td>
-                    <td><a href="view_doc.php?docid=<?php echo $row["docid"]; ?>"><button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;"></i>Lihat Dokumen</button></td>
+	                  <td><?php echo $row["nama_label"]; ?></td>
+	                  <td><?php echo $row["nilai_sim"]; ?></td>
+                    <td><a href="view_doc.php?nama_file=<?php echo $row["nama_file"]; ?>"><button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;"></i>Lihat Dokumen</button></td>
 	                </tr>
 	              <?php } ?>
 

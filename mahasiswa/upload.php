@@ -36,14 +36,7 @@ include "hitungVektor.php";
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
-    <h1>
-      Invoice
-      <small>#007612</small>
-    </h1>
     <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li><a href="#">Examples</a></li>
-      <li class="active">Invoice</li>
     </ol>
   </section>
 
@@ -65,7 +58,14 @@ include "hitungVektor.php";
       </div>
     </div>
   
-  <?php } ?>
+  <?php } else if (!empty($_REQUEST['error_type'])) { ?>
+      <div class="pad margin no-print">
+        <div class="callout callout-danger" style="margin-bottom: 0!important;">
+          <h4><i class="icon fa fa-ban"></i> Perhatian!</h4>
+          File harus berformat PDF
+        </div>
+      </div>
+  <?php }  ?>
 
 
 
@@ -78,8 +78,6 @@ include "hitungVektor.php";
           </div>
 
           <form enctype="multipart/form-data" method="POST" action="upload_dokumen.php" role="form">
-
-            <input type="hidden" name="APC_UPLOAD_PROGRESS" id="progress_key" value="<?php echo $up_id; ?>"/>
 
             <div class="box-body">
 
@@ -139,12 +137,6 @@ include "hitungVektor.php";
                 <label for="exampleInputFile">Upload Halaman Belakang Lainnya</label>
                 <input type="file" name="halbelakang" id="file">
                 <p class="help-block">Upload file .pdf dengan maksimal ukuran 5 MB</p>
-              </div>
-
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox"> Check me out
-                </label>
               </div>
             </div>
             <div class="box-footer">

@@ -3,7 +3,7 @@
 
     include('connect.php');
 
-    $nama_file = $_GET["nama_file"];
+    $nama_dokumen = $_GET["nama_dokumen"];
 
     $data = $nama_file;
     $dir = "../mahasiswa/fileupload";
@@ -20,7 +20,7 @@
          }
     }
  
-    mysqli_query($conn, "DELETE FROM documents WHERE nama_file='".$nama_file."'");
+    mysqli_query($conn, "DELETE FROM tb_dokumen WHERE nama_dokumen='".$nama_dokumen."'");
 
     header('location:my_docs.php');
 

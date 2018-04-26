@@ -31,7 +31,7 @@
   $jmlDoc = mysqli_fetch_array($Doc);
 
 
-  $Mhs = mysqli_query($conn, "SELECT COUNT(*) AS jumlah_mahasiswa FROM mahasiswa");
+  $Mhs = mysqli_query($conn, "SELECT COUNT(*) AS jumlah_mahasiswa FROM tb_mahasiswa");
 
   $jmlMhs = mysqli_fetch_array($Mhs);
 
@@ -109,7 +109,7 @@
 
             <?php
 
-        $result = mysqli_query($conn, "SELECT mahasiswa.nim,mahasiswa.nama,fakultas.nama_fakultas, jurusan.nama_jurusan FROM mahasiswa INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan");
+        $result = mysqli_query($conn, "SELECT tb_mahasiswa.nim,tb_mahasiswa.nama,tb_fakultas.nama_fakultas, tb_jurusan.nama_jurusan FROM tb_mahasiswa INNER JOIN tb_fakultas ON tb_mahasiswa.id_fakultas = tb_fakultas.id_fakultas INNER JOIN tb_jurusan ON tb_mahasiswa.id_jurusan = tb_jurusan.id_jurusan");
 
 
             ?>
@@ -133,12 +133,7 @@
                     <td><?php echo $row["nama_fakultas"]; ?></td>
                     <td>
 
-                    <a href="#edit<?php echo $row['nim']; ?>" data-toggle="modal" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit</a>
-                    
-                    <a href="#del<?php echo $row['nim']; ?>" data-toggle="modal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
-
-                    <button onclick="deleteAjax(<?php echo $row['nim']; ?>,this)" class="btn btn-danger">Delete</button>
-                      
+                      <a href="#edit<?php echo $row['nim']; ?>" data-toggle="modal" data-target="#edit<?php echo $row['nim']; ?>" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit</a>
                       <?php include('button.php'); ?>
 
                     </td>

@@ -15,7 +15,7 @@ $sql = "
        id_fakultas,
        nama_fakultas
   FROM
-       fakultas
+       tb_fakultas
   ORDER BY nama_fakultas
   ";
 

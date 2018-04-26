@@ -442,9 +442,6 @@ include "header.php";
             </div>
 </div></section>
 
-<div class="clearfix"></div>
-</div>
-
 
 
 <?php

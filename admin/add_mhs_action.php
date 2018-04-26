@@ -11,7 +11,7 @@
             if(isset($_POST["submit1"]))
             {
 
-                    $sql = "INSERT INTO mahasiswa(nim, nama, id_fakultas, id_jurusan, username, password, status_upload) VALUES('".$_POST['nim']."','".$_POST['nama']."','".$_POST['cmbFakultas']."','".$_POST['cmbJurusan']."','".$_POST['nim']."','".$defaultPass."', 'no')";
+                    $sql = "INSERT INTO tb_mahasiswa(nim, nama, id_fakultas, id_jurusan, username, password, status_upload) VALUES('".$_POST['nim']."','".$_POST['nama']."','".$_POST['fakultas']."','".$_POST['jurusan']."','".$_POST['nim']."','".$defaultPass."', 'no')";
 
                     $conn->query($sql);
 

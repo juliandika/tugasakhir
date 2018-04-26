@@ -5,9 +5,9 @@
     include('hitungbobot.php');
     include('hitungvektor.php');
 
-    $nama_file = $_GET["nama_file"];
+    $nama_dokumen = $_GET["nama_dokumen"];
 
-    $data = $nama_file;
+    $data = $nama_dokumen;
     $dir = "../mahasiswa/fileupload";
     $dirHandle = opendir($dir); 
 
@@ -22,9 +22,9 @@
          }
     }
  
-    mysqli_query($conn, "DELETE FROM documents WHERE nama_file='".$nama_file."'");
-    mysqli_query($conn, "DELETE FROM dok9 WHERE nama_file='".$nama_file."'");
-    hitungBobot();
+    mysqli_query($conn, "DELETE FROM tb_dokumen WHERE nama_dokumen='".$nama_dokumen."'");
+    mysqli_query($conn, "DELETE FROM tb_term WHERE nama_dokumen='".$nama_dokumen."'");
+    hitungbobot();
     hitungvektor();
     header('location:dashboard.php');
 

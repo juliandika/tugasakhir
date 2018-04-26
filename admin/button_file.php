@@ -1,4 +1,4 @@
-<div class="modal fade" id="view">
+<div class="modal fade" id="view<?php echo $row['nama_dokumen']; ?>">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

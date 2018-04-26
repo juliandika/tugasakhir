@@ -3,16 +3,10 @@
 include "header.php";
 include "connect.php";
 
-$sql = "
-SELECT
-     id_fakultas,
-     nama_fakultas
-FROM
-     fakultas
-ORDER BY nama_fakultas
-";
+$fakultas = mysqli_query($conn, "SELECT * FROM tb_fakultas");
 
-$getComboFakultas = mysqli_query($conn, $sql) or die ('Query Gagal');
+$jurusan = mysqli_query($conn, "SELECT * FROM tb_jurusan");
+
 
 ?>
 
@@ -39,7 +33,7 @@ $getComboFakultas = mysqli_query($conn, $sql) or die ('Query Gagal');
   $jmlDoc = mysqli_fetch_array($Doc);
 
 
-  $Mhs = mysqli_query($conn, "SELECT COUNT(*) AS jumlah_mahasiswa FROM mahasiswa");
+  $Mhs = mysqli_query($conn, "SELECT COUNT(*) AS jumlah_mahasiswa FROM tb_mahasiswa");
 
   $jmlMhs = mysqli_fetch_array($Mhs);
 
@@ -66,19 +60,22 @@ $getComboFakultas = mysqli_query($conn, $sql) or die ('Query Gagal');
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Pilih Fakultas</label>
-                        <select class="form-control" name="cmbFakultas" id="cmbFakultas">
+                        <select class="form-control" name="fakultas" id="Fakultas">
                           <option value="">--Pilih Fakultas--</option>
-                            <?php
-                               while($data = mysqli_fetch_array($getComboFakultas)){
-                                    echo '<option value="'.$data['id_fakultas'].'">'.$data['nama_fakultas'].'</option>';
-                               }
-                            ?>
+                            <?php while($row = mysqli_fetch_array($fakultas)){ ?>
+                                <?php extract($row); ?>
+                                    <option value="<?php echo $id_fakultas; ?>"><?php echo $nama_fakultas; ?></option>
+                            <?php   } ?>
                         </select>
                     </div>
                     <div class="form-group">
                       <label>Pilih Jurusan</label>
-                        <select class="form-control" name="cmbJurusan" id="cmbJurusan" width="300">
-                        <option value="">--Pilih Jurusan--</option>
+                        <select class="form-control" name="jurusan" id="Jurusan" width="300">
+                          <option value="">--Pilih Jurusan--</option>
+                            <?php while($row = mysqli_fetch_array($jurusan)){ ?>
+                                <?php extract($row); ?>
+                                    <option value="<?php echo $id_jurusan; ?>"><?php echo $nama_jurusan; ?></option>
+                            <?php   } ?>
                         </select>
 
                     </div>
@@ -98,69 +95,7 @@ $getComboFakultas = mysqli_query($conn, $sql) or die ('Query Gagal');
 
 <script type="text/javascript" src="jquery.min.js"></script>
 
-<script type="text/javascript">
-        $(function() {
-             $("#cmbFakultas").change(function(){
-                  
-                  var id_fakultas = $(this).val();
-         
-                  $.ajax({
-                     type: "POST",
-                     dataType: "html",
-                     url: "getJurusan.php",
-                     data: "id_fakultas="+id_fakultas,
-                     success: function(msg){
-                         if(msg == ''){
-                                 $("select#cmbJurusan").html('<option value="">--Pilih Jurusan--</option>');
-                                 //$("select#cmbKota").html('<option value="">--Pilih Kota--</option>');
-                         }else{
-                                   $("select#cmbJurusan").html(msg);                                                       
-                         }
-                         $("img#imgLoad").hide();
-         
-                         getAjaxAlamat();                                                        
-                     }
-                  });                    
-             });
-         
-                
-        });
-</script>
 
-  <?php
-
-
-
-
-
-            include('connect.php');
-
-            $str = "1234567890";
-
-            $defaultPass = md5($str);
-
-            $pass = md5($defaultPass);
-
-            if(isset($_POST["submit1"]))
-            {
-
-                    $sql = "INSERT INTO mahasiswa(nim, nama, id_fakultas, id_jurusan, username, password, status_upload) VALUES('".$_POST['nim']."','".$_POST['nama']."','".$_POST['cmbFakultas']."','".$_POST['cmbJurusan']."','".$_POST['nim']."','".$defaultPass."', 'no')";
-
-                    $conn->query($sql);
-
-                    //mysqli_query($conn, "INSERT INTO mahasiswa(nim, nama, id_fakultas, id_jurusan, username, password, status) VALUES('".$_POST['nim']."','".$_POST['nama']."','".$_POST['cmbFakultas']."','".$_POST['cmbJurusan']."','".$_POST['nim']."',$defaultPass, 'no')");
-
-                      /*echo $_POST['nim'];
-
-                      echo $_POST['nama'];
-
-                      echo $_POST['cmbFakultas'];
-
-                      echo $_POST['cmbJurusan'];*/
-
-            }
-
-  ?>
 
 
 <?php

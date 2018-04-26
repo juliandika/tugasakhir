@@ -32,7 +32,7 @@ $query = $_GET['keyword'];
 
               hitungsim($query);
 
-				      $result = mysqli_query($conn, "SELECT judul, nama, nama_jurusan, nama_fakultas, nama_label, documents.nama_file AS nama_doc, nilai FROM documents INNER JOIN tbcache ON documents.nama_file = tbcache.docid INNER JOIN mahasiswa ON mahasiswa.nim = documents.nim INNER JOIN fakultas ON mahasiswa.id_fakultas = fakultas.id_fakultas INNER JOIN jurusan ON mahasiswa.id_jurusan = jurusan.id_jurusan INNER JOIN label ON label.id_label = documents.id_label ORDER BY nilai DESC");
+				      $result = mysqli_query($conn, "SELECT judul, nama, nama_jurusan, nama_fakultas, nama_label, tb_dokumen.nama_dokumen AS nama_dokumen, nilai_sim FROM tb_dokumen INNER JOIN tb_cache ON tb_dokumen.id_dokumen = tb_cache.id_dokumen INNER JOIN tb_mahasiswa ON tb_mahasiswa.nim = tb_dokumen.nim INNER JOIN tb_fakultas ON tb_mahasiswa.id_fakultas = tb_fakultas.id_fakultas INNER JOIN tb_jurusan ON tb_mahasiswa.id_jurusan = tb_jurusan.id_jurusan INNER JOIN tb_label ON tb_label.id_label = tb_dokumen.id_label ORDER BY nilai_sim DESC");
 
             ?>
               <table id="example1" class="table table-bordered table-striped">
@@ -53,9 +53,9 @@ $query = $_GET['keyword'];
 	                  <td><?php echo $row["judul"]; ?></td>
 	                  <td><?php echo $row["nama_jurusan"]; ?></td>
                     <td><?php echo $row["nama_fakultas"]; ?></td>
-	                  <td><?php echo $row["label"]; ?></td>
-	                  <td><?php echo $row["nilai"]; ?></td>
-                    <td><a href="view_doc_queryexp.php?docid=<?php echo $row["nama_doc"]; ?>"><button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;"></i>Lihat Dokumen</button></td>
+	                  <td><?php echo $row["nama_label"]; ?></td>
+	                  <td><?php echo $row["nilai_sim"]; ?></td>
+                    <td><a href="view_doc_queryexp.php?nama_dokumen=<?php echo $row["nama_dokumen"]; ?>"><button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;"></i>Lihat Dokumen</button></td>
 	                </tr>
 	              <?php } ?>
 

@@ -5,33 +5,85 @@ function hitungVektor(){
 
 	include 'connect.php';
 
-	$docId = $nama_file;
+	$redirect = "upload.php";
 
-	mysqli_query($conn, "TRUNCATE TABLE tbvektor_copy");
+	ini_set('mysql.connect_timeout', 300);
+	ini_set('default_socket_timeout', 300);
 
-	$resDocId = mysqli_query($conn, "SELECT DISTINCT docid FROM tbindex_copy");
+	$resDocId = mysqli_query($conn, "SELECT DISTINCT id_dokumen, nama_dokumen FROM tb_index");
+
+	$sql = mysqli_query($conn, "SELECT * FROM tb_index");
 
 	$num_rows = mysqli_num_rows($resDocId);
 
-	while($rowDocId = mysqli_fetch_array($resDocId)) {
+	$docid = array();
+	$doc = array();
+	$length = array();
+	$data = array();
 
-		$docId = $rowDocId['docid'];
+	while($row = mysqli_fetch_array($resDocId)){
 
-		$resVektor = mysqli_query($conn, "SELECT bobot FROM tbindex_copy WHERE docid = '$docId'");
-		
-		$panjangVektor = 0;		
-		while($rowVektor = mysqli_fetch_array($resVektor)) {
-			$panjangVektor = $panjangVektor + $rowVektor['bobot']  *  $rowVektor['bobot'];	
-		}
-		
-		$panjangVektor = sqrt($panjangVektor);
-				
-		$resInsertVektor = mysqli_query($conn, "INSERT INTO tbvektor_copy (docId, panjang) VALUES ('$docId', $panjangVektor)");
+		 	  $doc[] = array('id_dokumen'=>$row['id_dokumen'],
+		 	  				 'nama_dokumen'=>$row['nama_dokumen']);
+
+	}
+
+	while($row = mysqli_fetch_array($sql)){
+
+		 	  
+		 	  $docid[] = array('doc'=>$row['nama_dokumen'],
+		 	  					'bobot' => $row['bobot']);
 
 
 	}
 
-	//header('Location: '.$redirect);
+	$panjang = 0;
+
+	for($i=0; $i<count($doc); $i++){
+
+		for($j=0; $j<count($docid); $j++){
+
+				if($doc[$i]['nama_dokumen'] == $docid[$j]['doc']){
+
+					$bobot =  $docid[$j]['bobot'];
+
+					$panjang = $panjang + $bobot * $bobot;
+
+				}
+				
+		}
+
+		$id_dokumen = $doc[$i]['id_dokumen'];
+		$document = $doc[$i]['nama_dokumen'];
+		$panjang_vektor = sqrt($panjang);
+		$length[] = array($id_dokumen, $document, $panjang_vektor);
+		$panjang = 0;
+
+	}
+
+	echo "<pre>";
+	print_r($length);
+	echo "</pre>";
+
+
+		mysqli_query($conn, "TRUNCATE TABLE tb_vektor");
+
+		$data = array();
+		foreach($length as $row) {
+			$id_dokumen = (int) $row[0];
+		    $document = mysqli_real_escape_string($conn, $row[1]);
+		    $panjang_vektor = (float) $row[2];
+		    $data[] = "($id_dokumen, '$document', $panjang_vektor)";
+		}
+
+
+		$values = implode(',', $data);
+
+		$sql = "INSERT INTO tb_vektor (id_dokumen, nama_dokumen, panjang_vektor) VALUES $values";
+
+		$conn->query($sql);
+
+		//header('Location: '.$redirect);
 
 }
 

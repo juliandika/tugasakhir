@@ -13,7 +13,7 @@ if(!isset($_SESSION['username'])){
     header('location: login.php');
 }
 
-$status_upload = mysqli_query($conn, "SELECT status_upload FROM mahasiswa WHERE nim='".$nim."'");
+$status_upload = mysqli_query($conn, "SELECT status_upload FROM tb_mahasiswa WHERE nim='".$nim."'");
 
 $baris = mysqli_fetch_array($status_upload);
 

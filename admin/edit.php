@@ -11,7 +11,7 @@
     $id_fakultas = $_POST['cmbFakultas'];
     $id_jurusan = $_POST['cmbJurusan'];
  
-    mysqli_query($conn,"UPDATE mahasiswa SET nama = '$nama', id_fakultas = $id_fakultas, id_jurusan = $id_jurusan WHERE nim='".$id."'");
+    mysqli_query($conn,"UPDATE tb_mahasiswa SET nama = '$nama', id_fakultas = $id_fakultas, id_jurusan = $id_jurusan WHERE nim='".$id."'");
 
     header('location:view_mhs.php');
 

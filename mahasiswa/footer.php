@@ -255,22 +255,18 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#example1').DataTable()
     $('#example2').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : false,
       'info'        : true,
       'autoWidth'   : true,
-      "aaSorting": []
     });
   });
 
-  $(document).ready(function(){
-
-    $('#example2').DataTable({
-        "order": []
-
+  $(function () {
+    $('#example1').DataTable({
+      'order'      : [[ 0, "desc" ]]
     });
   });
 

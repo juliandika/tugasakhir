@@ -15,13 +15,11 @@ $nama_file = $row['nama_dokumen'];
 
 $redirect = "dashboard.php";
 
-function convertToString($nama_file, $id_dokumen){
+function convertToString($nama_file){
 
-    include 'connect.php';
+    $path = "../mahasiswa/fileupload/" . $nama_file;
 
-    $file = $nama_file;
-
-	$string = (string) new PdfToText ("../mahasiswa/fileupload/" . $nama_file);
+	$string = (string) new PdfToText ($path);
 
     return $string;
 
@@ -69,13 +67,11 @@ function filtering($tokenize){
 
 }
 
-function indexing($filter, $nama_file, $id_dokumen, $tokenize){
+function indexing($filter, $file, $id_dokumen, $tokenize){
 
     include 'connect.php';
     $term = array();
     $data = array();
-
-    $file = $nama_file;
 
     for($i=0; $i<count($tokenize); $i++){
 
@@ -86,12 +82,9 @@ function indexing($filter, $nama_file, $id_dokumen, $tokenize){
             $term[] = array($id_dokumen, $file, $filter[$i]);
 
         }
-
-
               
     }
-
-    
+ 
     foreach($term as $row) {
         $id_dokumen = (int) $row[0];
         $file = mysqli_real_escape_string($conn, $row[1]);
@@ -105,10 +98,9 @@ function indexing($filter, $nama_file, $id_dokumen, $tokenize){
 
     $conn->query($insert);
 
-
 }
 
-$string = convertToString($nama_file, $id_dokumen);
+$string = convertToString($nama_file);
 
 $case_folding = caseFolding($string);
 
@@ -122,7 +114,7 @@ hitungVektor();
 
 mysqli_query($conn, "UPDATE tb_dokumen SET status_index = 1 WHERE id_dokumen='".$id_dokumen."'");
 
-//header('Location: '.$redirect);
+header('Location: '.$redirect);
 
 
 

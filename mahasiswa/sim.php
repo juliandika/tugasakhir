@@ -1,51 +1,54 @@
 <?php
 
 include 'connect.php';
-//error_reporting(0);
 
-$query = $_GET['keyword'];
 
-mysqli_query($conn, "TRUNCATE TABLE tb_cache");
-function hitungsim($query) {
+$keyword = $_GET['keyword'];
 
-include 'connect.php';
+function hitungsim($keyword) {
 
-	$result = array();
+	include 'connect.php';
 
-	$sql = "SELECT Count(*) as n FROM tb_vektor";
-
-	$resn = $conn->query($sql);
-
-	$rown = mysqli_fetch_array($resn);
-	$n = $rown['n'];
-	
-	$aquery = explode(" ", $query);
-	
 	$panjangQuery = 0;
-	$panjangQuerySinonim = 0;
 	$aBobotQuery = array();
-	$aBobotSinonim = array();
-	$adaSinonim = array();
-	$adaTerm = array();
 	$query = array();
 	$index = array();
 	$vektor = array();
-	$querytotal = array();
-	$totalSinonim = array();
+	$result = array();
+
+
+	$cleaning_text1 = preg_replace('/[^a-zA-Z -]/', '', $keyword);
+
+    $cleaning_text2 = preg_replace('/[-\n\r]/', ' ', $cleaning_text1);
+
+    $case_folding = strtolower($cleaning_text2);
+
+    $tokenize = explode(" ",$case_folding);
+
+    $remove_stopwords = "SELECT * FROM tb_stopwords";
+
+    $hasil = $conn->query($remove_stopwords);
+
+    if($hasil->num_rows > 0){
+
+        while($row = $hasil->fetch_array()) {
+
+            $stopword[] = $row['stopword'];
+        }
+    }
+
+    $aquery = array_diff($tokenize,$stopword);
+	
 	
 	for ($i=0; $i<count($aquery); $i++) {
 
-		$start1 = microtime(true);
+		$get = mysqli_query($conn, "SELECT * FROM tb_index WHERE term like '$aquery[$i]' LIMIT 1");
 
-		//$sql2 = "SELECT Count(*) as N from tbindex WHERE term like '$aquery[$i]'";
+		$sql = "SELECT * FROM tb_index WHERE term like '$aquery[$i]' LIMIT 1";
 
-		$sql3 = mysqli_query($conn, "SELECT * FROM tb_index WHERE term like '$aquery[$i]' LIMIT 1");
+		if(mysqli_num_rows($get) > 0){
 
-		if(mysqli_num_rows($sql3) > 0){
-
-			while($row = mysqli_fetch_array($sql3)){
-
-				  // OR just echo the data:
+			while($row = mysqli_fetch_array($get)){
 
 				  $idf = $row['bobot'] / $row['freq'];
 				  
@@ -54,33 +57,25 @@ include 'connect.php';
 				  $query[] = $row['term'];
 
 				  $panjangQuery = $panjangQuery + $idf * $idf;
-				  
-				  $AdaTerm = 1;
+			
 			}
-
-
 
 		}
 
-	} //endfor
+	}
 
 
-	$start4 = microtime(true);
-
-	$panjangQueryTotal = sqrt($panjangQuery);
+	$panjangVektorQuery = sqrt($panjangQuery);
 
 
 	for ($i=0; $i<count($query); $i++) {
 
 
-		$sql4 = mysqli_query($conn, "SELECT * FROM tb_index WHERE term like '$query[$i]'");
+		$getIndex = mysqli_query($conn, "SELECT * FROM tb_index WHERE term like '$query[$i]'");
 
-		while($row = mysqli_fetch_array($sql4)){
+		while($row = mysqli_fetch_array($getIndex)){
 
-		  // add each row returned into an array
 		  $index[] = $row;
-
-		  // OR just echo the data:
 
 		}
 	}
@@ -89,11 +84,10 @@ include 'connect.php';
 
 	for ($i=0; $i<count($index); $i++) {
 
-		$sql5 = mysqli_query($conn, "SELECT * FROM tb_vektor WHERE nama_file = '".$index[$i]['nama_file']."'");
+		$getVektor = mysqli_query($conn, "SELECT * FROM tb_vektor WHERE nama_dokumen = '".$index[$i]['nama_dokumen']."'");
 
-		while($row = mysqli_fetch_array($sql5)){
+		while($row = mysqli_fetch_array($getVektor)){
 
-		  // add each row returned into an array
 		  $vektor[] = $row;
 
 		  $vektor = array_map("unserialize", array_unique(array_map("serialize", $vektor)));
@@ -106,38 +100,32 @@ include 'connect.php';
 
 	for ($i=0; $i<count($vektor); $i++) {
 
-		$dotproduct = 0;
+		$dotProduct = 0;
 
 		for ($j=0; $j<count($index); $j++) {
 
 			for ($k=0; $k<count($query); $k++) {
 
-					if (($index[$j]['term'] == $query[$k]) && ($index[$j]['nama_file'] == $vektor[$i]['nama_file'])) {
-
-						$dotproduct = $dotproduct + $aBobotQuery[$k] * $index[$j]['bobot'];
+					if (($index[$j]['term'] == $query[$k]) && ($index[$j]['nama_dokumen'] == $vektor[$i]['nama_dokumen'])) {
+						$dotProduct = $dotProduct + $aBobotQuery[$k] * $index[$j]['bobot'];
 
 					} 
 
 			}
 		}
 
-		if ($dotproduct != 0) {
+		if ($dotProduct != 0) {
 
-
-			$sim = $dotproduct / ($panjangQueryTotal * $vektor[$i]['panjang_vektor']);
-
-			$result[] = array($query,$vektor[$i]['nama_file'],$sim);
-
+			$sim = $dotProduct / ($panjangVektorQuery* $vektor[$i]['panjang_vektor']);
+			$result[] = array($vektor[$i]['id_dokumen'],$vektor[$i]['nama_dokumen'],$sim);
 			$jumlahmirip++;
-
-
-			$docId = $vektor[$i]['nama_file'];
+			$nama_dokumen = $vektor[$i]['nama_dokumen'];
 
 		}
 
 
 	if ($jumlahmirip == 0) {
-		$result[] = array($query,0,0);
+		$result[] = array($vektor[$i]['id_dokumen'],0,0);
 		}
 	}
 
@@ -147,16 +135,19 @@ include 'connect.php';
 
 	$data = array();
 	foreach($result as $row) {
-	    $docId = mysqli_real_escape_string($conn, $row[1]);
+	    $id_dokumen = (int) $row[0];
+	    $nama_dokumen = mysqli_real_escape_string($conn, $row[1]);
 	    $sim = (float) $row[2];
-	    $data[] = "('$docId', $sim)";
+	    $data[] = "($id_dokumen, '$nama_dokumen', $sim)";
 	}
 
 	$values = implode(',', $data);
 
-	$sql = "INSERT INTO tb_cache (nama_file, nilai_sim) VALUES $values";
+	$insert = "INSERT INTO tb_cache(id_dokumen, nama_dokumen, nilai_sim) VALUES $values";
 
-	$conn->query($sql);
+
+
+	$conn->query($insert);
 		
 }
 

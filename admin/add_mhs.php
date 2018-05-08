@@ -3,11 +3,6 @@
 include "header.php";
 include "connect.php";
 
-$fakultas = mysqli_query($conn, "SELECT * FROM tb_fakultas");
-
-$jurusan = mysqli_query($conn, "SELECT * FROM tb_jurusan");
-
-
 ?>
 
 <div class="content-wrapper">
@@ -28,14 +23,7 @@ $jurusan = mysqli_query($conn, "SELECT * FROM tb_jurusan");
 
 <?php
 
-  $Doc = mysqli_query($conn, "SELECT COUNT(*) AS jumlah_dokumen FROM tbvektor_copy");
-
-  $jmlDoc = mysqli_fetch_array($Doc);
-
-
-  $Mhs = mysqli_query($conn, "SELECT COUNT(*) AS jumlah_mahasiswa FROM tb_mahasiswa");
-
-  $jmlMhs = mysqli_fetch_array($Mhs);
+  $sql_fakultas = mysqli_query($conn, "SELECT * FROM tb_fakultas");
 
 ?>
       <!-- Small boxes (Stat box) -->
@@ -60,22 +48,18 @@ $jurusan = mysqli_query($conn, "SELECT * FROM tb_jurusan");
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Pilih Fakultas</label>
-                        <select class="form-control" name="fakultas" id="Fakultas">
+                        <select class="form-control" name="fakultas" id="fakultas">
                           <option value="">--Pilih Fakultas--</option>
-                            <?php while($row = mysqli_fetch_array($fakultas)){ ?>
-                                <?php extract($row); ?>
-                                    <option value="<?php echo $id_fakultas; ?>"><?php echo $nama_fakultas; ?></option>
+                            <?php while($row_fakultas = mysqli_fetch_array($sql_fakultas)){ ?>
+                                    <option value="<?php echo $row_fakultas['id_fakultas'] ?>"><?php echo $row_fakultas['nama_fakultas']; ?></option>
                             <?php   } ?>
                         </select>
                     </div>
                     <div class="form-group">
                       <label>Pilih Jurusan</label>
-                        <select class="form-control" name="jurusan" id="Jurusan" width="300">
+                        <select class="form-control" name="jurusan" id="jurusan" width="300">
                           <option value="">--Pilih Jurusan--</option>
-                            <?php while($row = mysqli_fetch_array($jurusan)){ ?>
-                                <?php extract($row); ?>
-                                    <option value="<?php echo $id_jurusan; ?>"><?php echo $nama_jurusan; ?></option>
-                            <?php   } ?>
+                          <option></option>
                         </select>
 
                     </div>
@@ -94,6 +78,26 @@ $jurusan = mysqli_query($conn, "SELECT * FROM tb_jurusan");
 
 
 <script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+      $('#fakultas').change(function() {
+
+        var id_fakultas = $(this).val();
+
+        $.ajax({
+          type: 'POST',
+          url: 'jurusan.php',
+          data: 'id_fakultas='+id_fakultas,
+          success: function(response) {
+              $('#jurusan').html(response);
+          }
+
+        });
+
+      })
+  });
+</script>
 
 
 

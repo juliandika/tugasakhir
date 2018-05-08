@@ -30,7 +30,7 @@ $nim =  $_SESSION['username'];
 
       <?php
 
-        $result = mysqli_query($conn, "SELECT tb_dokumen.nama_file, tb_dokumen.judul, tb_dokumen.nama_file AS nama_file, tb_label.nama_label, tb_dokumen.upload_date FROM tb_dokumen INNER JOIN tb_label ON tb_dokumen.id_label = tb_label.id_label WHERE nim = $nim");
+        $result = mysqli_query($conn, "SELECT tb_dokumen.nama_dokumen, tb_dokumen.judul, tb_dokumen.nama_dokumen AS nama_dokumen, tb_label.nama_label, tb_dokumen.upload_date FROM tb_dokumen INNER JOIN tb_label ON tb_dokumen.id_label = tb_label.id_label WHERE nim = $nim");
 
 
       ?>

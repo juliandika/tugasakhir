@@ -4,7 +4,7 @@ include "header.php";
 include 'connect.php';
 include 'sim.php';
 
-$query = $_GET['keyword'];
+$keyword = $_GET['keyword'];
 
 ?>
 
@@ -29,10 +29,10 @@ $query = $_GET['keyword'];
 
             <?php
 
+              hitungsim($keyword);
 
-              hitungsim($query);
 
-				      $result = mysqli_query($conn, "SELECT judul, nama, nama_jurusan, nama_fakultas, nama_label, tb_dokumen.nama_file AS nama_file, nilai_sim FROM tb_dokumen INNER JOIN tb_cache ON tb_dokumen.nama_file = tb_cache.nama_file INNER JOIN tb_mahasiswa ON tb_mahasiswa.nim = tb_dokumen.nim INNER JOIN tb_fakultas ON tb_mahasiswa.id_fakultas = tb_fakultas.id_fakultas INNER JOIN tb_jurusan ON tb_mahasiswa.id_jurusan = tb_jurusan.id_jurusan INNER JOIN tb_label ON tb_label.id_label = tb_dokumen.id_label ORDER BY nilai_sim DESC");
+				      $result = mysqli_query($conn, "SELECT tb_dokumen.id_dokumen AS id_dokumen, judul, nama, nama_jurusan, nama_fakultas, nama_label, tb_dokumen.nama_dokumen AS nama_dokumen, nilai_sim FROM tb_dokumen INNER JOIN tb_cache ON tb_dokumen.id_dokumen = tb_cache.id_dokumen INNER JOIN tb_mahasiswa ON tb_mahasiswa.nim = tb_dokumen.nim INNER JOIN tb_fakultas ON tb_mahasiswa.id_fakultas = tb_fakultas.id_fakultas INNER JOIN tb_jurusan ON tb_mahasiswa.id_jurusan = tb_jurusan.id_jurusan INNER JOIN tb_label ON tb_label.id_label = tb_dokumen.id_label ORDER BY tb_cache.nilai_sim DESC");
 
 
             ?>
@@ -41,6 +41,7 @@ $query = $_GET['keyword'];
                 <tr>
                   <th>Judul</th>
                   <th>Nama Jurusan</th>
+                  <th>Nama Fakultas</th>
                   <th>Label</th>
                   <th>Similarity</th>
                   <th>Action</th>
@@ -48,15 +49,16 @@ $query = $_GET['keyword'];
                 </thead>
                 <tbody>
 
-                <?php while($row = mysqli_fetch_array($result)){ ?>
-	                <tr>
-	                  <td><?php echo $row["judul"]; ?></td>
-	                  <td><?php echo $row["nama_jurusan"]; ?></td>
-	                  <td><?php echo $row["nama_label"]; ?></td>
-	                  <td><?php echo $row["nilai_sim"]; ?></td>
-                    <td><a href="view_doc.php?nama_file=<?php echo $row["nama_file"]; ?>"><button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;"></i>Lihat Dokumen</button></td>
-	                </tr>
-	              <?php } ?>
+                 <?php while($row = mysqli_fetch_array($result)){ ?>
+                  <tr>
+                    <td><?php echo $row["nilai_sim"]; ?></td>
+                    <td><?php echo $row["judul"]; ?></td>
+                    <td><?php echo $row["nama_jurusan"]; ?></td>
+                    <td><?php echo $row["nama_fakultas"]; ?></td>
+                    <td><?php echo $row["nama_label"]; ?></td>
+                    <td><a href="view_doc.php?id_dokumen=<?php echo $row["id_dokumen"]; ?>"><button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;"></i>Lihat Dokumen</button></td>
+                  </tr>
+                <?php } ?>
 
                 </tbody>
               </table>

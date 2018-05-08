@@ -73,6 +73,53 @@ include_once 'connect.php';
 <!-- /.login-box -->
 
 <!-- jQuery 3 -->
+
+
+<div class="modal fade" id="del">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Login</h4>
+        </div>
+        <div class="modal-body">
+        <div class="container-fluid">
+          <h5><center>Username atau Password Kosong.<strong></strong></center></h5> 
+        </div> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+          
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>         <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="del2">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Login</h4>
+        </div>
+        <div class="modal-body">
+        <div class="container-fluid">
+          <h5><center>Username atau Password Salah.<strong></strong></center></h5> 
+        </div> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+          
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>         <!-- /.modal-dialog -->
+</div>
+
+
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -97,8 +144,13 @@ include_once 'connect.php';
 include_once 'connect.php';
 
 if(isset($_POST['username']) && isset($_POST['password']))
-{
-
+{ 
+    if ($_POST['username']==''||$_POST['password']=='') {
+      echo '<script>    
+      $("#del").modal();
+      </script>';
+    }
+    
     $username = $_POST['username'];
     $password = md5($_POST['password']);
 
@@ -125,6 +177,12 @@ if(isset($_POST['username']) && isset($_POST['password']))
         
         <?php
 
+
+    }else{
+
+      echo '<script>    
+      $("#del2").modal();
+      </script>';
 
     }
 }

@@ -17,7 +17,7 @@ if(!isset($_SESSION['username'])){
 
 <?php
 
-	$redirect = "upload.php";
+	$redirect = "my_docs.php";
 
 	$nim = $_SESSION['nim'];
 
@@ -94,9 +94,6 @@ if(!isset($_SESSION['username'])){
     if(count($errors) === 0) {
 
 
-    		//$nama_dokumen_cover = $nama_dokumen_cover . ".pdf";
-
-
 			if(move_uploaded_file($lokasi_file_cover,"$folder_cover")){
 
 			  $query = "INSERT INTO tb_dokumen (nim, judul, id_label, nama_dokumen, upload_date, status_index)
@@ -104,10 +101,8 @@ if(!isset($_SESSION['username'])){
 			            
 			  mysqli_query($conn, $query);
 
-			  //toIndex($nama_dokumen_cover);
 			}
 
-			
 
 			if(move_uploaded_file($lokasi_file_pengesahan,"$folder_pengesahan")){
 
@@ -115,8 +110,6 @@ if(!isset($_SESSION['username'])){
 			            VALUES('$nim', '$judul', 2, '$nama_dokumen_pengesahan', NOW(), 0)";
 			            
 			  mysqli_query($conn, $query);
-
-			  //toIndex($nama_dokumen_pengesahan);
 
 			}
 
@@ -128,8 +121,6 @@ if(!isset($_SESSION['username'])){
 			            
 			  mysqli_query($conn, $query);
 
-			  //toIndex($nama_dokumen_daftarisi);
-
 			}
 
 			if(move_uploaded_file($lokasi_file_babii,"$folder_babii")){
@@ -138,8 +129,6 @@ if(!isset($_SESSION['username'])){
 			            VALUES('$nim', '$judul', 4, '$nama_dokumen_babii', NOW(), 0)";
 			            
 			  mysqli_query($conn, $query);
-
-			  //toIndex($nama_dokumen_babii);
 
 			}
 
@@ -150,8 +139,6 @@ if(!isset($_SESSION['username'])){
 			            
 			  mysqli_query($conn, $query);
 
-			  //toIndex($nama_dokumen_babiii);
-
 			}
 
 			if(move_uploaded_file($lokasi_file_babiv,"$folder_babiv")){
@@ -160,9 +147,6 @@ if(!isset($_SESSION['username'])){
 			            VALUES('$nim', '$judul', 6, '$nama_dokumen_babiv', NOW(), 0)";
 			            
 			  mysqli_query($conn, $query);
-
-			  //toIndex($nama_dokumen_babiv);
-
 			}
 
 			if(move_uploaded_file($lokasi_file_babv,"$folder_babv")){
@@ -171,8 +155,6 @@ if(!isset($_SESSION['username'])){
 			            VALUES('$nim', '$judul', 7, '$nama_dokumen_babv', NOW(), 0)";
 			            
 			  mysqli_query($conn, $query);
-
-			  //toIndex($nama_dokumen_babv);
 
 			}
 
@@ -183,8 +165,6 @@ if(!isset($_SESSION['username'])){
 			            
 			  mysqli_query($conn, $query);
 
-			  //toIndex($nama_dokumen_dapus);
-
 			}
 
 			if(move_uploaded_file($lokasi_file_halbelakang,"$folder_halbelakang")){
@@ -194,19 +174,14 @@ if(!isset($_SESSION['username'])){
 			            
 			  mysqli_query($conn, $query);
 
-			  //toIndex($nama_dokumen_halbelakang);
-
 			}
 
 			mysqli_query($conn, "UPDATE mahasiswa SET status_upload = 'yes' WHERE nim=$nim");
 
-			//header('Location:upload.php?success=1');
 	}
 
-	//hitungBobot();
-	//hitungVektor();
 
-	//header('Location: '.$redirect);
+	header('Location: '.$redirect);
 
 
 ?>

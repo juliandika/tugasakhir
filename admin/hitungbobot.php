@@ -7,8 +7,6 @@ function hitungBobot(){
 	ini_set('mysql.connect_timeout', 300);
 	ini_set('default_socket_timeout', 300);
 
-	include 'connect.php';
-
 	$index = array();
 	$term = array();
 	$tf = array();
@@ -16,9 +14,7 @@ function hitungBobot(){
 	$bobot = array();
 
 	mysqli_query($conn, "TRUNCATE TABLE tb_index");
-	$resn = "INSERT INTO tb_index (id_dokumen, term, nama_dokumen, freq) SELECT id_dokumen,term,nama_dokumen,count(*) FROM tb_term GROUP BY id_dokumen,nama_dokumen,term";
-
-	$conn->query($resn);	
+	$resn = mysqli_query($conn, "INSERT INTO tb_index (id_dokumen, term, nama_dokumen, freq) SELECT id_dokumen,term,nama_dokumen,count(*) FROM tb_term GROUP BY id_dokumen,nama_dokumen,term");	
 
 	$n = mysqli_num_rows($resn);
 	
@@ -26,9 +22,9 @@ function hitungBobot(){
 
 	$n = mysqli_num_rows($resn);
 
-	$sql3 = mysqli_query($conn, "SELECT * FROM tb_index");
+	$resindex = mysqli_query($conn, "SELECT * FROM tb_index");
 
-	while($row = mysqli_fetch_array($sql3)){
+	while($row = mysqli_fetch_array($resindex)){
 
 	 	  $term[] = $row['term'];
 
@@ -51,8 +47,8 @@ function hitungBobot(){
 
 	}
 
-	mysqli_query($conn, "TRUNCATE TABLE tb_index");
 
+	mysqli_query($conn, "TRUNCATE TABLE tb_index");
 	$data = array();
 	foreach($bobot as $row) {
 		$id_dokumen = (int) $row[0];
@@ -65,11 +61,11 @@ function hitungBobot(){
 
 	$values = implode(',', $data);
 
-	$sql = "INSERT INTO tb_index (id_dokumen, term, nama_dokumen, freq, bobot) VALUES $values";
+	$insert = "INSERT INTO tb_index (id_dokumen, term, nama_dokumen, freq, bobot) VALUES $values";
 
 
 
-	$conn->query($sql);
+	$conn->query($insert);
 
   	//header('Location: '.$redirect);
  }

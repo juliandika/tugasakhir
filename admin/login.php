@@ -121,7 +121,16 @@ if(isset($_POST['username']) && isset($_POST['password']))
         <?php
 
 
-    }
+    }else{ ?>
+    <div class="login-box">
+        <div class="row">
+          <div class="alert alert-danger col-xs-8 col-lg-push-3">
+            <strong style="color:white">Invalid</strong> Username Or Password.
+          </div>
+        </div>
+    </div>
+
+    <?php }
 }
 
 ?>

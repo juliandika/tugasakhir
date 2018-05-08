@@ -127,7 +127,6 @@ if(!isset($_SESSION['username'])){
         </div>
         <div class="pull-left info">
           <p><?php echo $_SESSION['nama']; ?></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
       <!-- search form -->

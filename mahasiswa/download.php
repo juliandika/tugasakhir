@@ -1,8 +1,8 @@
 <?php
 
-if(isset($_GET['docid']))
+if(isset($_GET['nama_dokumen']))
 {
-    $nama_file = $_GET['docid'];
+    $nama_file = $_GET['nama_dokumen'];
 
     $dir = "fileupload/"; 
     $file = $dir . $nama_file;

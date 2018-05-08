@@ -3,7 +3,7 @@
 include "header.php";
 include 'connect.php';
 
-$docid = $_GET["docid"];
+$id_dokumen = $_GET["id_dokumen"];
 
 ?>
 
@@ -33,7 +33,7 @@ $docid = $_GET["docid"];
 
       <?php
 
-        $result = mysqli_query($conn, "SELECT DISTINCT nim, judul, nama, nama_jurusan, nama_unit_panjang, label, semua.doc AS docid, nilai FROM semua INNER JOIN tbcache ON semua.doc = tbcache.docid WHERE docid='".$docid."'");
+        $result = mysqli_query($conn, "SELECT tb_mahasiswa.nim, judul, nama, nama_jurusan, nama_fakultas, nama_label, tb_dokumen.nama_dokumen AS nama_dokumen, nilai_sim FROM tb_dokumen INNER JOIN tb_cache ON tb_dokumen.id_dokumen = tb_cache.id_dokumen INNER JOIN tb_mahasiswa ON tb_mahasiswa.nim = tb_dokumen.nim INNER JOIN tb_fakultas ON tb_mahasiswa.id_fakultas = tb_fakultas.id_fakultas INNER JOIN tb_jurusan ON tb_mahasiswa.id_jurusan = tb_jurusan.id_jurusan INNER JOIN tb_label ON tb_label.id_label = tb_dokumen.id_label  WHERE tb_cache.id_dokumen='".$id_dokumen."'");
 
 
       ?>
@@ -67,11 +67,11 @@ $docid = $_GET["docid"];
                   </tr>
                   <tr>
                     <td><b>Nama Fakultas</b></td>
-                    <td><?php echo $row["nama_unit_panjang"]; ?></td>
+                    <td><?php echo $row["nama_fakultas"]; ?></td>
                   </tr>
                   <tr>
                     <td><b>Jenis File</b></td>
-                    <td><?php echo $row["label"]; ?></td>
+                    <td><?php echo $row["nama_label"]; ?></td>
                   </tr>
 
                 </tbody>
@@ -84,7 +84,7 @@ $docid = $_GET["docid"];
 
       <div class="row no-print">
         <div class="col-xs-12">
-          <a href="download.php?docid=<?php echo $docid; ?>"><button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+          <a href="download.php?nama_dokumen=<?php echo $row['nama_dokumen']; ?>"><button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
             <i class="fa fa-download"></i>Download Dokumen
           </button>
         </div>
